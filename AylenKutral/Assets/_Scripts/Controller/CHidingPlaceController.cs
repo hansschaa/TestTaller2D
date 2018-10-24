@@ -8,7 +8,7 @@ public class CHidingPlaceController : MonoBehaviour
 	{
 		if (other.CompareTag("Player")) 
 		{
-			this.GetComponent<CPlayerMovement>().canHiding = true;
+			//this.GetComponent<CPlayerMovement>().canHiding = true;
 		} 
 	}
 
@@ -16,7 +16,7 @@ public class CHidingPlaceController : MonoBehaviour
 	{
 		if (other.CompareTag("Player")) 
 		{
-			this.GetComponent<CPlayerMovement>().canHiding = false;
+			//this.GetComponent<CPlayerMovement>().canHiding = false;
 		} 
 	}
 	

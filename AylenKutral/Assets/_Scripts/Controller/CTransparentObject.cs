@@ -15,7 +15,6 @@ public class CTransparentObject : MonoBehaviour
 	{
 		myColor = this.GetComponent<SpriteRenderer>().color;
 		alphaColor = new Color (myColor.r,myColor.g,myColor.b,0.75f);
-
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
