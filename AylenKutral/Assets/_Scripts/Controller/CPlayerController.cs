@@ -18,6 +18,7 @@ public class CPlayerController : MonoBehaviour
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     public bool m_Grounded;
 	public bool m_OnWater;
+	[HideInInspector] public float textureWidth;
 
 	// Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
@@ -39,6 +40,7 @@ public class CPlayerController : MonoBehaviour
 
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		cPlayerInput = this.GetComponent<CPlayerInput>();
+		textureWidth = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
 	}
 
 	
@@ -100,7 +102,7 @@ public class CPlayerController : MonoBehaviour
 
 	
 
-	public void Move(float move,bool crouch, bool jump)
+	public void Move(float move, bool moveWhitObject, bool crouch, bool jump)
 	{
 		// If crouching, check to see if the character can stand up
 		/* 
@@ -151,13 +153,20 @@ public class CPlayerController : MonoBehaviour
 				}
 			}
 
-			//Change the position for climbing
-			
-
-			//m_Rigidbody2D.position += new Vector2(0,yMove);
-
+			Vector3 targetVelocity;
 			// Move the character by finding the target velocity
-			Vector3 targetVelocity = new Vector2(move * 10f,m_Rigidbody2D.velocity.y);
+			if(moveWhitObject)
+			{
+				targetVelocity = new Vector2(move * 5f,m_Rigidbody2D.velocity.y);
+
+				GetComponent<CPlayerInput>().currentInteractiveObject.GetComponent<Rigidbody2D>().velocity = 
+				Vector3.SmoothDamp(GetComponent<CPlayerInput>().currentInteractiveObject.GetComponent<Rigidbody2D>().velocity, 
+				targetVelocity, ref m_Velocity, m_MovementSmoothing);
+			}
+				
+			else
+				targetVelocity = new Vector2(move * 10f,m_Rigidbody2D.velocity.y);
+
 			// And then smoothing it out and applying it to the character
 			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 			

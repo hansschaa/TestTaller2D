@@ -9,6 +9,8 @@ TagManager:
   - Object
   - Ladder
   - Water
+  - MovilObject
+  - HideZone
   layers:
   - Default
   - TransparentFX
@@ -20,8 +22,8 @@ TagManager:
   - 
   - Player
   - Item
-  - 
-  - 
+  - InteractiveObjects
+  - Ladder
   - 
   - 
   - 
@@ -46,9 +48,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: PlayerUI
-    uniqueID: 1786968543
+  - name: BeginPlayer1
+    uniqueID: 4267877787
+    locked: 0
+  - name: BehindPlayer0
+    uniqueID: 3239003895
     locked: 0
   - name: Player
     uniqueID: 2913247133
+    locked: 0
+  - name: AfterPlayer0
+    uniqueID: 3770554165
+    locked: 0
+  - name: AfterPlayer1
+    uniqueID: 1942156215
+    locked: 0
+  - name: PlayerUI
+    uniqueID: 1786968543
     locked: 0
