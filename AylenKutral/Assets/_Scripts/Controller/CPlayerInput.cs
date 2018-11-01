@@ -16,7 +16,7 @@ public class CPlayerInput : MonoBehaviour
 
 	[Header("Scripts Variables")]
 	public CPlayerController cPlayerController;
-	public CInventario cInventario;
+	public static CInventario cInventario;
 
 
 
@@ -24,7 +24,7 @@ public class CPlayerInput : MonoBehaviour
 	[Header("GameObjects")]
 	public GameObject proyectileProyection;
 	public Transform shootPosition;
-	private Rigidbody2D rb;
+	private Rigidbody2D _rb;
 	public Image stregthBarImage;
 
 
@@ -50,8 +50,11 @@ public class CPlayerInput : MonoBehaviour
 	public string NormalLayerID;
 	private bool _needGround;
 
+    [Header("States parameters")]
+    public float paralizedTime;
 
-	[Header("Collision Parameters")]
+
+    [Header("Collision Parameters")]
 	[SerializeField] private LayerMask m_WhatIsInteractiveObjects;	
 	[HideInInspector] public GameObject currentInteractiveObject;	
 	[HideInInspector] private bool _caughtToObject;		
@@ -69,10 +72,13 @@ public class CPlayerInput : MonoBehaviour
 	public float throwReduction;
 	public float jumpLadderReduction;
 
+    public CPlayerTrap trap;
+
+
 	void Awake()
 	{
 		this.player = ReInput.players.GetPlayer(0);
-		this.rb = this.GetComponent<Rigidbody2D>();
+		this._rb = this.GetComponent<Rigidbody2D>();
 		this._needGround = true;
 		this._caughtToObject = false;
 		_spriteRenderer = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
@@ -82,8 +88,10 @@ public class CPlayerInput : MonoBehaviour
 	void Update () 
 	{
 
-		#region "For events"
-		if(runSpeed == 2.5f && stregthBarImage.fillAmount >= runReduction)
+        this.paralizedTime =Time.time + 2000;
+
+        #region "For events"
+        if (runSpeed == 2.5f && stregthBarImage.fillAmount >= runReduction)
 			if(OnStrength != null)
                         OnStrength(-runReduction);
 
@@ -114,6 +122,31 @@ public class CPlayerInput : MonoBehaviour
 			if((this.player.GetNegativeButtonUp("Move Horizontal") || this.player.GetButtonUp("Move Horizontal")) 
 			&& runSpeed == 2.5f )
 				runSpeed = 1.5f;
+
+            if (cPlayerController.eState == EState.PARALIZED)
+            {
+                float lastVelocity = runSpeed; 
+                while(paralizedTime > Time.time)
+                {
+                    runSpeed = 0;
+                }
+                runSpeed = lastVelocity;
+                cPlayerController.eState = EState.NORMAL;
+            }
+
+            if(cPlayerController.eState == EState.TIRED)
+            {
+                //reduzco maximo barra
+                //stregthBarImage. -= 0.1;
+                //stregthBarImage.fillAmount -= tiredReduction;
+            }
+            if (cPlayerController.eState == EState.SLEEPING)
+            {
+                //Vuelvo Todo a la normalidad
+                //reduzco maximo barra
+                //stregthBarImage. -= 0.1;
+                //stregthBarImage.fillAmount -= tiredReduction;
+            }
 
 			horizontalMove = this.player.GetAxisRaw("Move Horizontal") * walkSpeed * runSpeed;
 
@@ -178,10 +211,12 @@ public class CPlayerInput : MonoBehaviour
 			}
 		}
 
-		#endregion
+        #endregion
 
-		#region "Caught Object Input"
-		if(currentInteractiveObject == null)
+
+
+        #region "Caught Object Input"
+        if (currentInteractiveObject == null)
 		{
 			RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y -2), 
 			new Vector2(this.transform.localScale.x,0),.8f,m_WhatIsInteractiveObjects);
@@ -234,11 +269,25 @@ public class CPlayerInput : MonoBehaviour
 		}
 	}
 
-	void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("buildeable") && player.GetButtonDown("E"))
+        {
+            if (trap.Type == ETrapType.PARALYZING)
+            {
+                List<EItem> items = new List<EItem>();
+                items.Add(EItem.ROCK);
+                items.Add(EItem.ROCK);
+                trap.OnUse(items);
+            }
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
 	{
 		if (other.CompareTag("Ladder") && onLadder) 
 		{
-			rb.gravityScale = 3;
+			_rb.gravityScale = 3;
 			onLadder = false;
 			other.GetComponent<CLadderController>().effectorCollider.enabled = true;	
 		}		
@@ -280,8 +329,8 @@ public class CPlayerInput : MonoBehaviour
 			{
 				if(this.player.GetAxisRaw("Move Vertical") != 0)
 				{
-					rb.velocity = new Vector2(rb.velocity.x, this.player.GetAxisRaw("Move Vertical") * climbVelocity);
-					rb.gravityScale = 0;
+					_rb.velocity = new Vector2(_rb.velocity.x, this.player.GetAxisRaw("Move Vertical") * climbVelocity);
+					_rb.gravityScale = 0;
 					other.GetComponent<CLadderController>().effectorCollider.enabled = false;
 
 					if(OnStrength != null)
@@ -289,21 +338,21 @@ public class CPlayerInput : MonoBehaviour
 				}
 
 				else if(this.player.GetAxisRaw("Move Vertical") == 0)
-					rb.velocity = new Vector2(rb.velocity.x,0);
+					_rb.velocity = new Vector2(_rb.velocity.x,0);
 			}	
 
 			else
 			{
 				onLadder=false;
-				rb.gravityScale = 3;
-				rb.velocity = new Vector2(rb.velocity.x,0);
+				_rb.gravityScale = 3;
+				_rb.velocity = new Vector2(_rb.velocity.x,0);
 			}
 				
 		}
 
 		else if (other.CompareTag("HideZone") && player.GetButtonDown("Action") && _spriteRenderer.sortingLayerName.Equals(NormalLayerID))
 		{
-			this.rb.velocity = Vector2.zero;
+			this._rb.velocity = Vector2.zero;
 			_spriteRenderer.sortingLayerName = hideLayerID;
 			jump = false;
 		}
@@ -311,7 +360,7 @@ public class CPlayerInput : MonoBehaviour
 
 	public void ResetVelocity()
 	{
-		rb.velocity = Vector2.zero;
+		_rb.velocity = Vector2.zero;
 		runSpeed = 1.5f;
 	}	
 

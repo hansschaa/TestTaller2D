@@ -32,11 +32,13 @@ public class CPlayerController : MonoBehaviour
 
 	private bool m_wasCrouching = false;
 	public EInputMode eInputMode;
+    public EState eState;
 	private CPlayerInput cPlayerInput;
 
 	private void Awake()
 	{	
 		eInputMode = EInputMode.FREEMOVEMENT;
+        eState = EState.NORMAL;
 
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		cPlayerInput = this.GetComponent<CPlayerInput>();
