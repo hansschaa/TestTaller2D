@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 
-public class CLadderController : MonoBehaviour 
+public class CLadderController : CHelperIcon 
 {
 	public Collider2D effectorCollider;
 
+	
 	
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CTransparentObject : MonoBehaviour 
+public class CTransparentObject : CHelperIcon 
 {
 
 	private Color myColor;

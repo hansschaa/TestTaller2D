@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
-public class CPickup : MonoBehaviour 
+public class CPickup : CHelperIcon
 {
     public EItem eItem;
+
+    
+
+    
 }

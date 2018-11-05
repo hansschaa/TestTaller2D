@@ -18,19 +18,21 @@ public class CPlayerController : MonoBehaviour
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     public bool m_Grounded;
 	public bool m_OnWater;
+	
+
 	[HideInInspector] public float textureWidth;
 
 	// Whether or not the player is grounded.
-	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
+	const float k_CeilingRadius = .5f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
-	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+	public bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
 
 	[Header("Events")]
 	[Space]
 
 
-	private bool m_wasCrouching = false;
+	public bool m_wasCrouching = false;
 	public EInputMode eInputMode;
     public EState eState;
 	private CPlayerInput cPlayerInput;
@@ -39,10 +41,9 @@ public class CPlayerController : MonoBehaviour
 	{	
 		eInputMode = EInputMode.FREEMOVEMENT;
         eState = EState.NORMAL;
-
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		cPlayerInput = this.GetComponent<CPlayerInput>();
-		textureWidth = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
+		//textureWidth = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
 	}
 
 	
@@ -53,7 +54,7 @@ public class CPlayerController : MonoBehaviour
 		
 		//m_Grounded = false;
 
-		var raycasthit2d = Physics2D.Raycast(m_GroundCheck.position, Vector3.down, .1f, m_WhatIsGround);
+		var raycasthit2d = Physics2D.Raycast(m_GroundCheck.position, Vector3.down , 1f, m_WhatIsGround);
 		//print(raycasthit2d);
 		//Raycast collision whit ground gameObject
 		
@@ -65,19 +66,23 @@ public class CPlayerController : MonoBehaviour
 
 		
 		//print("Angle: " + Vector2.Angle(Vector3.up,raycasthit2d.normal));
-		 
+		
+		
 		if(!cPlayerInput.onLadder && !m_wasCrouching)
 			if(Vector2.Angle(Vector3.up,raycasthit2d.normal) != 0)
 			{
 				//m_Rigidbody2D.mass = 0.01f;
 				m_Rigidbody2D.gravityScale = 16;
+				//Vector2 amountDiscount = new Vector2(Physics2D.gravity * Mathf.Cos(Vector2.Angle(Vector3.up,raycasthit2d.normal)),
+		
 			}
 					
-
+			
 			else
 			{
 				//m_Rigidbody2D.mass = 1f;
 				m_Rigidbody2D.gravityScale = 3;
+		
 			}
 			
 
@@ -107,15 +112,13 @@ public class CPlayerController : MonoBehaviour
 	public void Move(float move, bool moveWhitObject, bool crouch, bool jump)
 	{
 		// If crouching, check to see if the character can stand up
-		/* 
-		if (!crouch)
+		if (!crouch && m_wasCrouching)
 		{
 			// If the character has a ceiling preventing them from standing up, keep them crouching
 			if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
-			{
 				crouch = true;
-			}
-		}*/
+			
+		}
 
 		//only control the player if grounded or airControl is turned on
 		if (m_Grounded || m_AirControl)
@@ -174,19 +177,19 @@ public class CPlayerController : MonoBehaviour
 			
 			
 
-
+			if(cPlayerInput.currentInteractiveObject == null)
 			// If the input is moving the player right and the player is facing left...
-			if (move > 0 && !m_FacingRight)
-			{
-				// ... flip the player.
-				Flip();
-			}
-			// Otherwise if the input is moving the player left and the player is facing right...
-			else if (move < 0 && m_FacingRight)
-			{
-				// ... flip the player.
-				Flip();
-			}
+				if (move > 0 && !m_FacingRight)
+				{
+					// ... flip the player.
+					Flip();
+				}
+				// Otherwise if the input is moving the player left and the player is facing right...
+				else if (move < 0 && m_FacingRight)
+				{
+					// ... flip the player.
+					Flip();
+				}
 		}
 		// If the player should jump...
 		if (m_Grounded && jump && !m_OnWater && !this.GetComponent<CPlayerInput>().climbing)
@@ -241,9 +244,6 @@ public class CPlayerController : MonoBehaviour
 		}
 
 	}
-	
-	
-
 	void OnEnable()
     {
         CGameOverController.OnGameOver += goToLastSave;

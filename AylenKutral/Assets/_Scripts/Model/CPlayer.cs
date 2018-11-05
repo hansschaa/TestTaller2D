@@ -13,11 +13,11 @@ public class CPlayer : MonoBehaviour, ICharacter {
 	// Update is called once per frame
 	void Update () 
 	{
-		movement();	
+		//movement();	
 	}
 
 	public void movement()
     {
-		this.transform.position = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+		//this.transform.position = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
     }
 }

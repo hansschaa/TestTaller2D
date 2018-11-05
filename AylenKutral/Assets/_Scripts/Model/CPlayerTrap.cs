@@ -32,7 +32,7 @@ public class CPlayerTrap : MonoBehaviour, ITrap {
 
     private void Awake()
     {
-        inventory = CPlayerInput.cInventario;
+        //inventory = CPlayerInput.cInventario;
         Type = ETrapType.PARALYZING;
     }
 

@@ -9,14 +9,15 @@ public class CPlayerInput : MonoBehaviour
 {
 	#region  "Events"
 	public delegate void PickUpDelegate(EItem ei, int i);
-	public delegate void StrengthDelegate(float amount);
+	//public delegate void StrengthDelegate(float amount);
 	public static event PickUpDelegate OnPickUp;
-	public static event StrengthDelegate OnStrength;
+	//public static event StrengthDelegate OnStrength;
 	#endregion
 
 	[Header("Scripts Variables")]
 	public CPlayerController cPlayerController;
-	public static CInventario cInventario;
+	public CInventario cInventario;
+	private CPlayerAnimation _cPlayerAnimation;
 
 
 
@@ -25,7 +26,7 @@ public class CPlayerInput : MonoBehaviour
 	public GameObject proyectileProyection;
 	public Transform shootPosition;
 	private Rigidbody2D _rb;
-	public Image stregthBarImage;
+	//public Image stregthBarImage;
 
 
 	[Header("Objects")]
@@ -40,15 +41,15 @@ public class CPlayerInput : MonoBehaviour
 	public float throwForce;
 	public float climbVelocity = 10f;
 	public bool onLadder = false;
+	private bool _onHide = false;
 	public float walkSpeed = 60f;
 	private float runSpeed = 1.5f;
 	private float horizontalMove = 0f;
 	private float verticalMove = 0f;
 	private bool jump = false;
-	private bool crouch = false;
-	public string hideLayerID;
-	public string NormalLayerID;
+	public bool crouch = false;
 	private bool _needGround;
+
 
     [Header("States parameters")]
     public float paralizedTime;
@@ -65,12 +66,13 @@ public class CPlayerInput : MonoBehaviour
 	[HideInInspector] public Player player;
 	[HideInInspector] private SpriteRenderer _spriteRenderer;
 
+	/* 
 	[Header("Reduction of strength")]
 	public float runReduction;
 	public float pushReduction;
 	public float climbReduction;
 	public float throwReduction;
-	public float jumpLadderReduction;
+	public float jumpLadderReduction;*/
 
     public CPlayerTrap trap;
 
@@ -82,15 +84,17 @@ public class CPlayerInput : MonoBehaviour
 		this._needGround = true;
 		this._caughtToObject = false;
 		_spriteRenderer = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+		_cPlayerAnimation = this.GetComponent<CPlayerAnimation>();
 	}
 
 
 	void Update () 
 	{
 
-        this.paralizedTime =Time.time + 2000;
+        //this.paralizedTime =Time.time + 2000;
 
         #region "For events"
+		/* 
         if (runSpeed == 2.5f && stregthBarImage.fillAmount >= runReduction)
 			if(OnStrength != null)
                         OnStrength(-runReduction);
@@ -103,7 +107,7 @@ public class CPlayerInput : MonoBehaviour
                         OnStrength(-pushReduction);
 
 		if(_caughtToObject && stregthBarImage.fillAmount < pushReduction)
-			DisengageObject();
+			DisengageObject();*/
 
 		
 		#endregion
@@ -112,12 +116,14 @@ public class CPlayerInput : MonoBehaviour
 		if(cPlayerController.eInputMode == EInputMode.FREEMOVEMENT)
 		{
 			if((this.player.GetNegativeButtonDoublePressDown("Move Horizontal") || 
-			this.player.GetButtonDoublePressDown("Move Horizontal")) && !this.crouch && this.GetComponent<CPlayerController>().m_Grounded
-			&& stregthBarImage.fillAmount >= runReduction)
+			this.player.GetButtonDoublePressDown("Move Horizontal")) && !this.crouch && currentInteractiveObject == null &&
+			this.GetComponent<CPlayerController>().m_Grounded)
+			//&& stregthBarImage.fillAmount >= runReduction)
 				runSpeed = 2.5f;
 
+			/* 
 			if(player.GetButtonUp("Action") && _spriteRenderer.sortingLayerName.Equals(hideLayerID))
-				_spriteRenderer.sortingLayerName = NormalLayerID;
+				_spriteRenderer.sortingLayerName = NormalLayerID;*/
 
 			if((this.player.GetNegativeButtonUp("Move Horizontal") || this.player.GetButtonUp("Move Horizontal")) 
 			&& runSpeed == 2.5f )
@@ -150,24 +156,21 @@ public class CPlayerInput : MonoBehaviour
 
 			horizontalMove = this.player.GetAxisRaw("Move Horizontal") * walkSpeed * runSpeed;
 
-			if(this.player.GetButtonDown("Jump"))
+			if(this.player.GetButtonDown("Jump") && !cPlayerController.m_OnWater)
 			{
 				jump = true;
-
-				if(onLadder && stregthBarImage.fillAmount >= jumpLadderReduction)
+				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.JUMP,"Jump",2,1,0);
+				/*if(onLadder && stregthBarImage.fillAmount >= jumpLadderReduction)
 					if(OnStrength != null)
-                        OnStrength(-jumpLadderReduction);
+                        OnStrength(-jumpLadderReduction);*/
 
 			}
-				
-				
-				
 
-			if(this.player.GetButton("Down"))
-				crouch = true;
+			if(this.player.GetButtonDown("Down"))
+				crouch = !crouch;
+
 			
-			if(this.player.GetButtonUp("Down"))
-				crouch = false;
+				
 
 			if(this.player.GetButtonDown("Throw") && cPlayerController.m_Grounded && !cPlayerController.m_OnWater)
 			{
@@ -192,10 +195,11 @@ public class CPlayerInput : MonoBehaviour
 				cPlayerController.eInputMode = EInputMode.FREEMOVEMENT;	
 			}
 
-			if(this.player.GetButtonDown("Throw") && stregthBarImage.fillAmount >= throwReduction)
+			if(this.player.GetButtonDown("Throw") )
+			//&& stregthBarImage.fillAmount >= throwReduction)
 			{
-				if(OnStrength != null)
-                        OnStrength(-throwReduction);
+				/*if(OnStrength != null)
+                        OnStrength(-throwReduction);*/
 
 				cInventario.removeItem(EItem.ROCK);
 
@@ -218,8 +222,8 @@ public class CPlayerInput : MonoBehaviour
         #region "Caught Object Input"
         if (currentInteractiveObject == null)
 		{
-			RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y -2), 
-			new Vector2(this.transform.localScale.x,0),.8f,m_WhatIsInteractiveObjects);
+			RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), 
+			new Vector2(this.transform.localScale.x,0),1f,m_WhatIsInteractiveObjects);
       
 			if (hit.collider != null)
 			{
@@ -229,7 +233,8 @@ public class CPlayerInput : MonoBehaviour
 				_cInteractiveObject.ShowButton(true);
 				
 
-				if(hit.collider.gameObject.CompareTag("MovilObject") && stregthBarImage.fillAmount >= pushReduction)
+				if(hit.collider.gameObject.CompareTag("MovilObject") )
+				//&& stregthBarImage.fillAmount >= pushReduction)
 				{
 					if(this.player.GetButtonDown("Action"))
 					{
@@ -257,21 +262,63 @@ public class CPlayerInput : MonoBehaviour
 
         #endregion
 
+    
+		#region "Update Animation"
+		//Duda que serás mas cercano al optimo
+		//Si hacer la validacion acá o en la clase CPlayerAnimationState
+		//Pues envio datos que quizas no usaré porque la animacion a cambiar es la misma que la actual
+		
+		if(currentInteractiveObject == null)
+		{
+			if(!jump && !onLadder && _rb.velocity.y <= 0)
+			{
+				if(!crouch && !cPlayerController.m_wasCrouching && !cPlayerController.m_OnWater && cPlayerController.m_Grounded )
+				{
+					if(horizontalMove != 0 && runSpeed==1.5f)
+						_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.WALK,"Walk",2f,0,0.05f);
+					
+					else if(horizontalMove != 0 && runSpeed==2.5f)
+						_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.RUN,"Run",2f,0,0.05f);
 
-    }
+					else if(horizontalMove == 0)
+						_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.IDLE,"Idle",1.4f,0, 0.05f);	
+				}
+
+				else if(crouch)
+					_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.CROUCH,"Crouch",1f,0,0.05f);
+			}
+
+			else if(_rb.velocity.y < 0 && !onLadder && !cPlayerController.m_Grounded && !crouch && !cPlayerController.m_OnWater)
+				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.FALL,"Fall",1,0,0.05f);	
+
+			else if(cPlayerController.m_OnWater)
+				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.SWIM,"Swim",1,-1,0.05f);
+		}
+
+		else if(currentInteractiveObject != null)
+		{
+			if(cPlayerController.m_FacingRight && horizontalMove >= 0 || !cPlayerController.m_FacingRight && horizontalMove <= 0)
+				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.PUSH,"Push",1,0,0.05f);	
+
+			if(cPlayerController.m_FacingRight && horizontalMove < 0 || !cPlayerController.m_FacingRight && horizontalMove > 0)
+				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.POP,"Pop",1,0,0.05f);	
+		}
+		#endregion
+	
+	}
 
 	void FixedUpdate()
 	{
-		if(cPlayerController.eInputMode == EInputMode.FREEMOVEMENT && _spriteRenderer.sortingLayerName != hideLayerID)
+		if(cPlayerController.eInputMode == EInputMode.FREEMOVEMENT && !_onHide)
 		{
 			cPlayerController.Move(horizontalMove * Time.deltaTime, _caughtToObject, crouch,jump);
 			jump = false;
 		}
 	}
-
+	/* 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("buildeable") && player.GetButtonDown("E"))
+        if(other.CompareTag("Buildeable") && player.GetButtonDown("E"))
         {
             if (trap.Type == ETrapType.PARALYZING)
             {
@@ -281,7 +328,7 @@ public class CPlayerInput : MonoBehaviour
                 trap.OnUse(items);
             }
         }
-    }
+    }*/
 
     void OnTriggerExit2D(Collider2D other)
 	{
@@ -313,7 +360,8 @@ public class CPlayerInput : MonoBehaviour
 
 		}
 
-		else if (other.CompareTag("Ladder") && !onLadder && stregthBarImage.fillAmount >= climbReduction * 4 
+		else if (other.CompareTag("Ladder") && !onLadder 
+		//&& stregthBarImage.fillAmount >= climbReduction * 4 
 		&& cPlayerController.m_Grounded) 
 		{
 			if(this.player.GetAxisRaw("Move Vertical") != 0)
@@ -325,37 +373,50 @@ public class CPlayerInput : MonoBehaviour
 
 		else if (onLadder) 
 		{
-			if(stregthBarImage.fillAmount >= climbReduction)
-			{
+			/*if(stregthBarImage.fillAmount >= climbReduction)
+			{*/
 				if(this.player.GetAxisRaw("Move Vertical") != 0)
 				{
 					_rb.velocity = new Vector2(_rb.velocity.x, this.player.GetAxisRaw("Move Vertical") * climbVelocity);
 					_rb.gravityScale = 0;
 					other.GetComponent<CLadderController>().effectorCollider.enabled = false;
+					_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.CLIMB,"Climb",1,0,0.05f);
 
-					if(OnStrength != null)
-                        OnStrength(-climbReduction);
+
+					/*if(OnStrength != null)
+                        OnStrength(-climbReduction);*/
 				}
 
 				else if(this.player.GetAxisRaw("Move Vertical") == 0)
 					_rb.velocity = new Vector2(_rb.velocity.x,0);
-			}	
+			/*}	
 
 			else
 			{
 				onLadder=false;
 				_rb.gravityScale = 3;
 				_rb.velocity = new Vector2(_rb.velocity.x,0);
-			}
+			}*/
 				
 		}
 
-		else if (other.CompareTag("HideZone") && player.GetButtonDown("Action") && _spriteRenderer.sortingLayerName.Equals(NormalLayerID))
+		else if (other.CompareTag("HideZone") && player.GetButtonDown("Action") && !_onHide)
 		{
 			this._rb.velocity = Vector2.zero;
-			_spriteRenderer.sortingLayerName = hideLayerID;
+			//_spriteRenderer.sortingLayerName = hideLayerID;
 			jump = false;
+			this.transform.GetChild(0).gameObject.SetActive(false);
+			this.transform.GetChild(1).gameObject.SetActive(true);
+			_onHide = true;
 		}
+
+		else if(other.CompareTag("HideZone") && player.GetButtonDown("Action") && _onHide)
+		{
+			_onHide = false;
+			this.transform.GetChild(0).gameObject.SetActive(true);
+			this.transform.GetChild(1).gameObject.SetActive(false);
+		}
+
 	}
 
 	public void ResetVelocity()
@@ -366,11 +427,11 @@ public class CPlayerInput : MonoBehaviour
 
 	public void DisengageObject()
 	{
-		_auxRigidbody2D.velocity = Vector2.zero;
+		//_auxRigidbody2D.velocity = Vector2.zero;
 		currentInteractiveObject = null;
 		_auxInteractiveObject = null;
 		_cInteractiveObject.inInteraction = false;
 		_caughtToObject = false;
-		_auxRigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX;
+		//_auxRigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX;
 	}
 }

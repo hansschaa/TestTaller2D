@@ -44,10 +44,10 @@ public class CDayController : MonoBehaviour {
             plusNumber = false;
             dayNumber += 0.5f;
         }
-        Debug.Log(transform.rotation.eulerAngles.x);
+//        Debug.Log(transform.rotation.eulerAngles.x);
 
         //if(!isDay && (int)(transform.rotation.eulerAngles.x /360.0f) == 1) dayNumber++;
 
-        Debug.Log("Is Day:" + isDay + ";" + "velocity:" + speed + ";" + "Day :" + (int)dayNumber);
+       // Debug.Log("Is Day:" + isDay + ";" + "velocity:" + speed + ";" + "Day :" + (int)dayNumber);
     }
 }

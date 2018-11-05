@@ -11,17 +11,17 @@ public class CResistanceBar : MonoBehaviour
 	void Start()
 	{
 		_strengthBar = GetComponent<Image>();
-		_increaseStrengthCoroutine = StartCoroutine(IncreaseStrength());
+		//_increaseStrengthCoroutine = StartCoroutine(IncreaseStrength());
 	}
 
 	void OnEnable()
     {
-        CPlayerInput.OnStrength += SetStrengthAmount;
+        //CPlayerInput.OnStrength += SetStrengthAmount;
     }
     
     void OnDisable()
     {
-        CPlayerInput.OnStrength -= SetStrengthAmount;
+        //CPlayerInput.OnStrength -= SetStrengthAmount;
     }
 
     private void SetStrengthAmount(float amount)
