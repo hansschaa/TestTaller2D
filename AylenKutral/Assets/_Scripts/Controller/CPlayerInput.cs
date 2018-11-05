@@ -156,7 +156,10 @@ public class CPlayerInput : MonoBehaviour
 
 			horizontalMove = this.player.GetAxisRaw("Move Horizontal") * walkSpeed * runSpeed;
 
-			if(this.player.GetButtonDown("Jump") && !cPlayerController.m_OnWater)
+			
+
+			if(this.player.GetButtonDown("Jump") && !cPlayerController.m_OnWater && !crouch 
+			&& cPlayerController.m_Grounded && currentInteractiveObject == null)
 			{
 				jump = true;
 				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.JUMP,"Jump",2,1,0);
@@ -166,13 +169,28 @@ public class CPlayerInput : MonoBehaviour
 
 			}
 
-			if(this.player.GetButtonDown("Down"))
-				crouch = !crouch;
-
-			
+			//Agachar
+			if(this.player.GetButtonDown("Down") && !crouch && currentInteractiveObject == null &&
+			!jump && !onLadder )
+			{
+				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.CROUCH,"Crouch",1f,0,0.05f);
+				crouch = true;
+			}
 				
 
-			if(this.player.GetButtonDown("Throw") && cPlayerController.m_Grounded && !cPlayerController.m_OnWater)
+			//Parar
+			else if(this.player.GetButtonDown("Down") && cPlayerController.CheckHeadCollision() == null)
+			{
+				crouch = false;/* 
+				if(runSpeed == 2.5f)
+					_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.RUN,"Run",2f,0,0.05f);
+
+				if(runSpeed == 1.5f)
+					_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.WALK,"Walk",2f,0,0.05f);*/
+			}
+				
+
+			if(this.player.GetButtonDown("Throw") && cPlayerController.m_Grounded && !cPlayerController.m_OnWater && !crouch)
 			{
 				//I check if there are rocks in my inventory
 				if(cInventario.getItemAmount(EItem.ROCK) > 0)
@@ -243,7 +261,8 @@ public class CPlayerInput : MonoBehaviour
 						currentInteractiveObject = hit.collider.gameObject;
 						_cInteractiveObject.inInteraction = true;
 						_caughtToObject = true;
-						_auxRigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+						_auxRigidbody2D.constraints = RigidbodyConstraints2D.None;
+						//_auxRigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
 					}
 				}
 			}
@@ -256,9 +275,8 @@ public class CPlayerInput : MonoBehaviour
 		}
 
 		else if(this.player.GetButtonUp("Action") && currentInteractiveObject != null)
-        {
 			DisengageObject();
-        }
+        
 
         #endregion
 
@@ -270,11 +288,11 @@ public class CPlayerInput : MonoBehaviour
 		
 		if(currentInteractiveObject == null)
 		{
-			if(!jump && !onLadder && _rb.velocity.y <= 0)
+			if(!jump && !onLadder )
 			{
-				if(!crouch && !cPlayerController.m_wasCrouching && !cPlayerController.m_OnWater && cPlayerController.m_Grounded )
+				if(!crouch && !cPlayerController.m_wasCrouching && !cPlayerController.m_OnWater && cPlayerController.m_Grounded && _rb.velocity.y <= 0)
 				{
-					if(horizontalMove != 0 && runSpeed==1.5f)
+					if(horizontalMove != 0 && runSpeed==1.5f )
 						_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.WALK,"Walk",2f,0,0.05f);
 					
 					else if(horizontalMove != 0 && runSpeed==2.5f)
@@ -282,13 +300,10 @@ public class CPlayerInput : MonoBehaviour
 
 					else if(horizontalMove == 0)
 						_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.IDLE,"Idle",1.4f,0, 0.05f);	
-				}
-
-				else if(crouch)
-					_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.CROUCH,"Crouch",1f,0,0.05f);
+				}	
 			}
 
-			else if(_rb.velocity.y < 0 && !onLadder && !cPlayerController.m_Grounded && !crouch && !cPlayerController.m_OnWater)
+			if(_rb.velocity.y < 0 && !onLadder && !cPlayerController.m_Grounded && !crouch && !cPlayerController.m_OnWater)
 				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.FALL,"Fall",1,0,0.05f);	
 
 			else if(cPlayerController.m_OnWater)
@@ -427,11 +442,15 @@ public class CPlayerInput : MonoBehaviour
 
 	public void DisengageObject()
 	{
-		//_auxRigidbody2D.velocity = Vector2.zero;
-		currentInteractiveObject = null;
+		//_auxRigidbody2D.velocity = Vector2.zero;	
 		_auxInteractiveObject = null;
 		_cInteractiveObject.inInteraction = false;
 		_caughtToObject = false;
-		//_auxRigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX;
+
+		if(!currentInteractiveObject.GetComponent<CMoveRock>().onWater)
+			_auxRigidbody2D.constraints = RigidbodyConstraints2D.FreezePositionX;
+
+		currentInteractiveObject = null;
+		
 	}
 }

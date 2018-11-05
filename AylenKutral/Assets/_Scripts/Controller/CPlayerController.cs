@@ -58,7 +58,9 @@ public class CPlayerController : MonoBehaviour
 		//print(raycasthit2d);
 		//Raycast collision whit ground gameObject
 		
+		//print("RayCast: " + raycasthit2d.collider.gameObject);
 		m_Grounded = raycasthit2d;
+
 
 		//NormalizeSlope();
 
@@ -67,7 +69,7 @@ public class CPlayerController : MonoBehaviour
 		
 		//print("Angle: " + Vector2.Angle(Vector3.up,raycasthit2d.normal));
 		
-		
+		/* 
 		if(!cPlayerInput.onLadder && !m_wasCrouching)
 			if(Vector2.Angle(Vector3.up,raycasthit2d.normal) != 0)
 			{
@@ -83,7 +85,7 @@ public class CPlayerController : MonoBehaviour
 				//m_Rigidbody2D.mass = 1f;
 				m_Rigidbody2D.gravityScale = 3;
 		
-			}
+			}*/
 			
 
 		
@@ -257,5 +259,10 @@ public class CPlayerController : MonoBehaviour
 	public void goToLastSave()
 	{
 		this.transform.position = lastSavePoint.GetComponent<CSavePoint>().position;
+	}
+
+	public Collider2D CheckHeadCollision()
+	{
+		return Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround);
 	}
 }
