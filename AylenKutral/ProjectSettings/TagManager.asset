@@ -12,6 +12,8 @@ TagManager:
   - MovilObject
   - HideZone
   - Buildeable
+  - Enemy
+  - CollisionRock
   layers:
   - Default
   - TransparentFX

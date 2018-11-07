@@ -5,6 +5,7 @@ using UnityEngine;
 public class CMoveRock : CInteractiveObject 
 {
 	public bool onWater;
+
 	/// <summary>
 	/// OnTriggerEnter is called when the Collider other enters the trigger.
 	/// </summary>
@@ -12,7 +13,12 @@ public class CMoveRock : CInteractiveObject
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.CompareTag("Water") && !onWater)
-			onWater = true;
+        {
+            //this.GetComponent<CapsuleCollider2D>().enabled = false;
+            //this.GetComponent<BoxCollider2D>().enabled = true;
+            onWater = true;
+        }
+			
 		
 	}
 

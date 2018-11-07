@@ -306,7 +306,7 @@ public class CPlayerInput : MonoBehaviour
 			if(_rb.velocity.y < 0 && !onLadder && !cPlayerController.m_Grounded && !crouch && !cPlayerController.m_OnWater)
 				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.FALL,"Fall",1,0,0.05f);	
 
-			else if(cPlayerController.m_OnWater)
+			else if(cPlayerController.m_OnWater && !onLadder)
 				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.SWIM,"Swim",1,-1,0.05f);
 		}
 
@@ -318,9 +318,14 @@ public class CPlayerInput : MonoBehaviour
 			if(cPlayerController.m_FacingRight && horizontalMove < 0 || !cPlayerController.m_FacingRight && horizontalMove > 0)
 				_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.POP,"Pop",1,0,0.05f);	
 		}
-		#endregion
-	
-	}
+
+        if (onLadder)
+        {
+            _cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.CLIMB, "Climb", 1, 0, 0.05f);
+        }
+        #endregion
+
+    }
 
 	void FixedUpdate()
 	{
@@ -330,20 +335,8 @@ public class CPlayerInput : MonoBehaviour
 			jump = false;
 		}
 	}
-	/* 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.CompareTag("Buildeable") && player.GetButtonDown("E"))
-        {
-            if (trap.Type == ETrapType.PARALYZING)
-            {
-                List<EItem> items = new List<EItem>();
-                items.Add(EItem.ROCK);
-                items.Add(EItem.ROCK);
-                trap.OnUse(items);
-            }
-        }
-    }*/
+
+    
 
     void OnTriggerExit2D(Collider2D other)
 	{
@@ -377,7 +370,7 @@ public class CPlayerInput : MonoBehaviour
 
 		else if (other.CompareTag("Ladder") && !onLadder 
 		//&& stregthBarImage.fillAmount >= climbReduction * 4 
-		&& cPlayerController.m_Grounded) 
+		&& (cPlayerController.m_Grounded || cPlayerController.m_OnWater))
 		{
 			if(this.player.GetAxisRaw("Move Vertical") != 0)
 			{
