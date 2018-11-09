@@ -225,7 +225,7 @@ public class CPlayerInput : MonoBehaviour
 				GameObject rock = Instantiate(objects[0], shootPosition.position , Quaternion.identity);
 
 				rock.GetComponent<Rigidbody2D>().AddForce(new Vector2 (Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * throwForce);
-				Destroy(rock,3f);
+				Destroy(rock,1.5f);
 
 
 				this.proyectileProyection.SetActive(false);

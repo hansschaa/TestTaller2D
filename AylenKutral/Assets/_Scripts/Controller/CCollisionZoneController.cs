@@ -7,6 +7,7 @@ using DG.Tweening;
 public class CCollisionZoneController : MonoBehaviour
 {
     public GameObject agua;
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
