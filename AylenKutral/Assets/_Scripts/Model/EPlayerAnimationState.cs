@@ -1,7 +1,9 @@
 ﻿public enum EPlayerAnimationState
 {
-	IDLE,WALK,RUN,JUMP,CLIMB,SWIM,FALL,PUSH,CROUCH,
+    //Must stop if the x player velocity is 0
+	PUSH,POP,CROUCH,CLIMB,
+    JUMP,FALL,IDLE,SWIM,WALK,RUN,DIVE
     
-    POP
+    
 }
 

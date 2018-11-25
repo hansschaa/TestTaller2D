@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class CPlayerController : MonoBehaviour 
@@ -12,7 +13,7 @@ public class CPlayerController : MonoBehaviour
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
-	[SerializeField] private Collider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
+	[SerializeField] private CapsuleCollider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
 	[SerializeField] private Collider2D m_CrouchAbleCollider;				    // A collider that will be abled when crouching
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
@@ -27,23 +28,45 @@ public class CPlayerController : MonoBehaviour
 	private Rigidbody2D m_Rigidbody2D;
 	public bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
-
-	[Header("Events")]
-	[Space]
+	public RaycastHit2D raycasthit2d ;
 
 
 	public bool m_wasCrouching = false;
 	public EInputMode eInputMode;
     public EState eState;
 	private CPlayerInput cPlayerInput;
+    public LayerMask m_WhatIsWater;
 
-	private void Awake()
+    private void Awake()
 	{	
 		eInputMode = EInputMode.FREEMOVEMENT;
         eState = EState.NORMAL;
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		cPlayerInput = this.GetComponent<CPlayerInput>();
 		//textureWidth = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
+	}
+
+	/// <summary>
+	/// Update is called every frame, if the MonoBehaviour is enabled.
+	/// </summary>
+	void Update()
+	{
+		
+		m_OnWater =  Physics2D.Raycast(m_CeilingCheck.position, Vector3.down , 1.5f, m_WhatIsWater);
+		if(eInputMode == EInputMode.FREEMOVEMENT && m_OnWater)
+		{
+			eInputMode = EInputMode.SWIM;
+			ChangeColliderOrientation(false);
+		}
+			
+
+
+		else if(eInputMode == EInputMode.SWIM && !m_OnWater)	
+		{
+			ChangeColliderOrientation(true);
+			//m_Rigidbody2D.gravityScale = 3;
+			eInputMode = EInputMode.FREEMOVEMENT;
+		}
 	}
 
 	
@@ -54,13 +77,16 @@ public class CPlayerController : MonoBehaviour
 		
 		//m_Grounded = false;
 
-		var raycasthit2d = Physics2D.Raycast(m_GroundCheck.position, Vector3.down , 1f, m_WhatIsGround);
+		
+
+		raycasthit2d = Physics2D.Raycast(m_GroundCheck.position, Vector3.down , .5f, m_WhatIsGround);
 		//print(raycasthit2d);
 		//Raycast collision whit ground gameObject
 		
 		//print("RayCast: " + raycasthit2d.collider.gameObject);
+		
 		m_Grounded = raycasthit2d;
-
+		
 
 		//NormalizeSlope();
 
@@ -107,6 +133,13 @@ public class CPlayerController : MonoBehaviour
 					OnLandEvent.Invoke();
 			}
 		}	*/
+
+		//Allow know if the player collided whit the peak of the surface for do animation
+		if(cPlayerInput.onLadder)
+			raycasthit2d = Physics2D.Raycast(m_CeilingCheck.position, Vector3.down , .3f, m_WhatIsGround);
+			if(raycasthit2d.collider != null && raycasthit2d.collider.gameObject.CompareTag("Peak"))
+				if(raycasthit2d.collider.gameObject.CompareTag("Peak"))
+					print("Hacer animación de peak");
 	}
 
 	
@@ -167,7 +200,7 @@ public class CPlayerController : MonoBehaviour
 				targetVelocity = new Vector2(move * 5f,m_Rigidbody2D.velocity.y);
 
 				GetComponent<CPlayerInput>().currentInteractiveObject.GetComponent<Rigidbody2D>().velocity = 
-				Vector3.SmoothDamp(GetComponent<CPlayerInput>().currentInteractiveObject.GetComponent<Rigidbody2D>().velocity, 
+				Vector3.SmoothDamp(m_Rigidbody2D.velocity, 
 				targetVelocity, ref m_Velocity, m_MovementSmoothing);
 			}
 				
@@ -181,21 +214,22 @@ public class CPlayerController : MonoBehaviour
 
 			if(cPlayerInput.currentInteractiveObject == null)
 			// If the input is moving the player right and the player is facing left...
-				if (move > 0 && !m_FacingRight)
+				if (move > 0 && !m_FacingRight && !cPlayerInput.onLadder)
 				{
 					// ... flip the player.
 					Flip();
 				}
 				// Otherwise if the input is moving the player left and the player is facing right...
-				else if (move < 0 && m_FacingRight)
+				else if (move < 0 && m_FacingRight && !cPlayerInput.onLadder)
 				{
 					// ... flip the player.
 					Flip();
 				}
 		}
 		// If the player should jump...
-		if (m_Grounded && jump && !m_OnWater && !this.GetComponent<CPlayerInput>().climbing)
+		if (m_Grounded && jump && !m_OnWater)
 		{
+			print("entro");
 			// Add a vertical force to the player.
 			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
@@ -232,20 +266,26 @@ public class CPlayerController : MonoBehaviour
 				lastSavePoint = other.gameObject.GetComponent<CSavePoint>();
 		}	
 
+		/* 
 		if(other.CompareTag("Water"))
 		{
 			m_OnWater = true;
-		}
+			eInputMode = EInputMode.SWIM;
+			
+		}*/
 	}
 
+	/* 
 	void OnTriggerExit2D(Collider2D other)
 	{
 		if(other.CompareTag("Water"))
 		{
+			eInputMode = EInputMode.FREEMOVEMENT;
 			m_OnWater = false;
+			cPlayerInput.runSpeed = 1.5f;
 		}
 
-	}
+	}*/ 
 	void OnEnable()
     {
         CGameOverController.OnGameOver += goToLastSave;
@@ -261,8 +301,26 @@ public class CPlayerController : MonoBehaviour
 		this.transform.position = lastSavePoint.GetComponent<CSavePoint>().position;
 	}
 
-	public Collider2D CheckHeadCollision()
+	public Collider2D CheckGroundHeadCollision()
 	{
 		return Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround);
 	}
+
+	public Collider2D CheckWaterHeadCollision()
+	{
+		return Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsWater);
+	}
+
+    internal void ChangeColliderOrientation(bool toVertical)
+    {
+		if(!toVertical)			
+        	m_CrouchDisableCollider.direction = CapsuleDirection2D.Horizontal;
+
+		else
+			m_CrouchDisableCollider.direction = CapsuleDirection2D.Vertical;
+
+
+		Vector2 currentSize =  m_CrouchDisableCollider.size;
+		m_CrouchDisableCollider.size = new Vector2(currentSize.y, currentSize.x);
+    }
 }

@@ -60,9 +60,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - PixelSnap: 0
+    - _Alpha: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
+    - _Distortion: 4
     - _DstBlend: 0
     - _EnableExternalAlpha: 0
     - _GlossMapScale: 1
@@ -74,8 +76,11 @@ Material:
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Speed: 0.28
     - _SrcBlend: 1
     - _UVSec: 0
+    - _Wind: 0.15313815
+    - _Wind2: 1
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

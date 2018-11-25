@@ -14,6 +14,8 @@ TagManager:
   - Buildeable
   - Enemy
   - CollisionRock
+  - Peak
+  - MyPlayer
   layers:
   - Default
   - TransparentFX
@@ -68,4 +70,7 @@ TagManager:
     locked: 0
   - name: PlayerUI
     uniqueID: 1786968543
+    locked: 0
+  - name: Cinema
+    uniqueID: 2541429215
     locked: 0

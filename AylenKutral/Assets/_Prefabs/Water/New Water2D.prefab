@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 61532459756105848}
   m_Layer: 2
   m_Name: New Water2D
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,8 +38,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1597517355188220}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -8.474236, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 538, y: -68.2, z: 0}
+  m_LocalScale: {x: 1.7623839, y: 3.2685997, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -76,8 +76,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -524413131
+  m_SortingLayer: 4
   m_SortingOrder: 0
 --- !u!33 &33270850126404500
 MeshFilter:
@@ -98,7 +98,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000047683716, y: 0.25}
+  m_Offset: {x: 0, y: 0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitsPerUV: {x: 5.12, y: 20.48}
-  unitsPerUV2: {x: 1, y: 1}
+  unitsPerUV2: {x: 5.12, y: 20.48}
   xSegments: 123
   zSegments: 1
   width: 40.780205
@@ -166,7 +166,7 @@ MonoBehaviour:
   waterType: 0
   animationMethod: 0
   clippingMethod: 1
-  flowDirection: 3
+  flowDirection: 0
   controlPointPos: 0
   sineWavesType: 0
   particleSystemInstantiation: 0
@@ -190,14 +190,14 @@ MonoBehaviour:
   constantWaterArea: 0
   waterDisplacement: 0
   animateWaterArea: 0
-  waveSpeed: 8
+  waveSpeed: 20
   velocityFilter: -2
-  waterDensity: 2
+  waterDensity: 3.01
   polygonCorners: 8
   maxDrag: 500
   maxLift: 200
   dragCoefficient: 0.4
-  liftCoefficient: 0.25
+  liftCoefficient: 1
   timeStep: 0.5
   maxAmplitude: 0.1
   minAmplitude: 0.01
@@ -215,11 +215,11 @@ MonoBehaviour:
   splashSound: {fileID: 0}
   playerBoundingBoxSize: {x: 1, y: 1}
   playerBoundingBoxCenter: {x: 0, y: 0}
-  playerBuoyantForceScale: 0.5
+  playerBuoyantForceScale: 1
   showPolygon: 0
   showForces: 0
   neighborVertVelocityScale: 0.5
-  sineWaveVelocityScale: 0.05
+  sineWaveVelocityScale: 0.01
   overlapSphereRadius: 0.05
   springSimulation: 1
   topEdgeYOffset: 0
@@ -231,13 +231,13 @@ MonoBehaviour:
   particleSystemOrderInLayer: 0
   meshSegmentsPerWaterLineSegment: 4
   showClippingPlolygon: 0
-  waterFlow: 0
+  waterFlow: 1
   flowAngle: 0
   waterFlowForce: 5
   useAngles: 0
-  waveAmplitude: 0.16
-  waveStretch: 0.5
-  wavePhaseOffset: 0.1
+  waveAmplitude: 0.7
+  waveStretch: 0.6
+  wavePhaseOffset: 0.02
   controlPointVelocity: 0
   useControlPoints: 0
   randomValues: 1

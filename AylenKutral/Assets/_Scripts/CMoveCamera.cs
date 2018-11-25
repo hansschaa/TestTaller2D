@@ -15,9 +15,14 @@ public class CMoveCamera : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        
+        if(collision.CompareTag("MyPlayer"))
             if (!alejado)
-                camera.GetComponent<Animator>().SetTrigger("Alejar");
+            {
+                camera.GetComponent<Animator>().SetTrigger("ZoomOut");
+                alejado = true;
+            }
+                
 
     }
 
