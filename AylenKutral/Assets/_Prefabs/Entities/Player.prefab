@@ -404,7 +404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1549345662498570
 GameObject:
   m_ObjectHideFlags: 1
@@ -1246,7 +1246,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1288286384510388}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.31, y: -51.95, z: 0}
+  m_LocalPosition: {x: -2.72, y: -20.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4634900770517110}
@@ -3084,18 +3084,18 @@ MonoBehaviour:
   shootPosition: {fileID: 4682721229398874}
   objects:
   - {fileID: 1288458722036578, guid: 3b0a1686607d44412bdc153be3e29983, type: 2}
+  diveSpeed: 0
   climbing: 0
   throwForce: 2500
   climbVelocity: 7
   onLadder: 0
-  onDive: 0
   walkSpeed: 25
   runSpeed: 1.5
   crouch: 0
   paralizedTime: 0
   m_WhatIsInteractiveObjects:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
   currentInteractiveObject: {fileID: 0}
   distanceToPush: 1.2
   trap: {fileID: 0}
@@ -3169,6 +3169,9 @@ MonoBehaviour:
   m_wasCrouching: 0
   eInputMode: 2
   eState: 0
+  m_WhatIsWater:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &114651814686950790
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3343,7 +3346,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b3b788e6a02b54c08ae84372707c5526, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

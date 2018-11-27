@@ -86,7 +86,8 @@ public class TitleAnimation : MonoBehaviour
 	{
 		if(this.player.GetButtonDown("Start"))
 		{
-			print("as");
+			GameStateManager.eGameState = EGameState.CUTSCENE;
+
 			b.Kill();
 			DOTween.Kill(b);
 			

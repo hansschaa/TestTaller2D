@@ -113,8 +113,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1310480937921628}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.38, y: -11.48, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.830001, y: -21.65736, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4980323681897252}
@@ -155,8 +155,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1672415117166778}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.17, z: 0}
-  m_LocalScale: {x: 0.485, y: 0.40788502, z: 0.485}
+  m_LocalPosition: {x: 0.073, y: 1.046, z: 0}
+  m_LocalScale: {x: 0.86591244, y: 0.72823244, z: 0.86591244}
   m_Children: []
   m_Father: {fileID: 4163117891518970}
   m_RootOrder: 1
@@ -168,7 +168,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1222255961675488}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.041840967, y: 0.33682063, z: -4.24}
+  m_LocalPosition: {x: -0.041840967, y: 0.33682063, z: -1.86}
   m_LocalScale: {x: 2.0920503, y: 2.0920503, z: 2.0920503}
   m_Children: []
   m_Father: {fileID: 4980323681897252}
@@ -181,8 +181,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1911960225707120}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.37, z: 0}
-  m_LocalScale: {x: 0.478, y: 0.478, z: 0.478}
+  m_LocalPosition: {x: 0.073, y: 3.187, z: 0}
+  m_LocalScale: {x: 0.8534147, y: 0.8534147, z: 0.8534147}
   m_Children:
   - {fileID: 4370428181798904}
   - {fileID: 4904035985198156}
@@ -199,7 +199,7 @@ Animator:
   m_GameObject: {fileID: 1310480937921628}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fed0ebef648d44c85a602f5ef56a8968, type: 2}
+  m_Controller: {fileID: 9100000, guid: b55d11e151e2c4e20aa2dc5409952bd4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -218,8 +218,8 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 0.55906206, b: 0, a: 1}
-  m_Intensity: 16.02
-  m_Range: 3.06
+  m_Intensity: 4.15
+  m_Range: 8.432842
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:

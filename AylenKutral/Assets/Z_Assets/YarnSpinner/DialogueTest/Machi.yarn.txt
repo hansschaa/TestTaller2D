@@ -1,0 +1,13 @@
+title: Start
+tags: 
+colorID: 0
+position: 497,230
+---
+Soy una anciana y me duele la espalda
+<<ChangeSpeaker Canvas 0>>
+Ahh si? 
+<<ChangeSpeaker Canvas 1>>
+Si , ahora me duele el cuello
+<<ChangeSpeaker Canvas 0>>
+oka
+===

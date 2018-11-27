@@ -2,8 +2,6 @@
 
 public class CHelperIcon : MonoBehaviour 
 {
-    
-    
 	void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("MyPlayer"))
@@ -16,7 +14,4 @@ public class CHelperIcon : MonoBehaviour
         if(other.CompareTag("MyPlayer"))
             this.transform.GetChild(0).gameObject.SetActive(false);
     }
-
-
-
 }

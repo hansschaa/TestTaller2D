@@ -14,11 +14,11 @@ public class CPlayerInput : MonoBehaviour
 	//public static event StrengthDelegate OnStrength;
 	#endregion
 
+
 	[Header("Scripts Variables")]
 	public CPlayerController cPlayerController;
 	public CInventario cInventario;
 	private CPlayerAnimation _cPlayerAnimation;
-
 
 
 
@@ -98,7 +98,7 @@ public class CPlayerInput : MonoBehaviour
 	{
 
         //this.paralizedTime =Time.time + 2000;
-
+		
         #region "For events"
 		/* 
         if (runSpeed == 2.5f && stregthBarImage.fillAmount >= runReduction)
