@@ -6,52 +6,97 @@ public class CEpunamun : MonoBehaviour {
 
     float lastTime;
 
-    public float delay;
+    //time that enemy use to rotate in 180 degrees
+    public float rotateDelay;
+    //time that enemy is stunned
+    public float stunnedDelay;
+    //max distance that enemy can move since original point
     public float maxDist;
+    //enemy velocity
     public float speedMovement;
 
-    public bool collision = false;
+    //bool to recognize if linecast is collision with player
+    public bool target = false;
+    //direction of Epunamun
     public bool dir = false;
+    //bool to recognize if Epunamun is retorning to initial position
+    bool returning = false;
+    //bool to recognize stunned state
+    bool stunned = false;
 
+    //init and final points of LineCast
     public Transform start;
     public Transform end;
-    public Transform player;
-    public GameObject warning;
-    private Rigidbody2D rb;
 
+    //player Transform
+    public Transform player;
+
+    //enemy expressions
+    public SpriteRenderer warning;
+    public SpriteRenderer lost;
+    public SpriteRenderer blind;
+
+    //Components
+    private Rigidbody2D rb;
+    private Collider2D c2D;
+
+    //aux transform to save initial enemy position
     private Transform aux;
 
     private void Awake()
     {
         rb = this.gameObject.GetComponent<Rigidbody2D>();
+        c2D = this.gameObject.GetComponent<Collider2D>();
+        warning.enabled = false;
+        lost.enabled = false;
+        blind.enabled = false;
     }
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         aux = new GameObject().transform;
         lastTime = Time.time;
-        //StartCoroutine(TurnAround());
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
         Raycasting();
         Behaviours();
-	}
-
-    
-    public void Raycasting()
-    {
-        Debug.DrawLine(start.position, end.position,Color.red);
-        collision = Physics2D.Linecast(start.position,end.position, 1 << LayerMask.NameToLayer("Player"));
     }
 
-    public void Behaviours ()
+    public void Raycasting()
     {
-        print(collision);
-        if (!collision)
+        Debug.DrawLine(start.position, end.position, Color.red);
+        target = Physics2D.Linecast(start.position, end.position, 1 << LayerMask.NameToLayer("Player"));
+    }
+
+    public void Behaviours()
+    {
+        if (stunned)
         {
-            if (Time.time - lastTime >= delay)
+            rb.velocity = Vector3.zero;
+            lost.enabled = false;
+            warning.enabled = false;
+        }
+        else
+        if (!target)
+        {
+            lost.enabled = true;
+            warning.enabled = false;
+            if (returning)
+            {
+                if (Vector3.Distance(new Vector3(transform.position.x, 0f), new Vector3(aux.position.x, 0f)) <= 0.5f) returning = false;
+                if (dir)
+                {
+                    rb.velocity = new Vector3(-speedMovement, 0, 0);
+                }
+                else
+                {
+                    rb.velocity = new Vector3(speedMovement, 0, 0);
+                }
+            }
+            else
+            if (Time.time - lastTime >= rotateDelay)
             {
                 dir = !dir;
                 lastTime = Time.time;
@@ -62,69 +107,61 @@ public class CEpunamun : MonoBehaviour {
         }
         else
         {
-            //moverse a la izquierda
+            //move to left
             if (Vector3.Distance(transform.position, aux.position) <= maxDist && dir)
             {
-                rb.AddForce(new Vector3(-speedMovement,0,0));
-                //espera,rota y vuelve al anterior
-                //transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x - 2, 0, 0), -speedMovement * Time.deltaTime);
-                transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, 0), new Vector3(player.position.x, player.position.y, 0), speedMovement * Time.deltaTime);
-                //transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x - 2, transform.position.y, transform.position.z), speedMovement * Time.deltaTime);
-            } else if(Vector3.Distance(transform.position, aux.position) <= maxDist && !dir)
-            {
-                rb.AddForce(new Vector3(speedMovement, 0, 0));
-                //transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + 2, 0, 0), speedMovement * Time.deltaTime);
-                transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, 0), player.position, speedMovement * Time.deltaTime);
-                //transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + 2, transform.position.y, transform.position.z), speedMovement * Time.deltaTime);
+                warning.enabled = true;
+                lost.enabled = false;
+
+                rb.velocity = new Vector3(-speedMovement, 0, 0);
             }
-            else
+            //move to right
+            else if (Vector3.Distance(new Vector3(transform.position.x, 0f), new Vector3(aux.position.x, 0f)) >= maxDist && !dir)
             {
-                print("retorno");
-                //retorna
-                //transform.position = Vector3.MoveTowards(new Vector3(transform.position.x,0,0), new Vector3(aux.position.x,0,0), speedMovement * Time.deltaTime);
+                warning.enabled = true;
+                lost.enabled = false;
+                rb.velocity = new Vector3(speedMovement, 0, 0);
+            }
+            //return initial pos
+            else if (Vector3.Distance(new Vector3(transform.position.x, 0f), new Vector3(aux.position.x, 0f)) >= maxDist)
+            {
+                dir = !dir;
+                returning = true;
+                if (dir)
+                    transform.eulerAngles = new Vector2(0f, 0f);
+                else transform.eulerAngles = new Vector2(0f, 180f);
             }
         }
-
+    }
+    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //cambia a estado de stun y deja pasar al target
+        //aqui debiera haber una animacion de stuneado
+        if (collision.gameObject.tag == "MyPlayer")
+        {
+            StartCoroutine(DesactiveCollider());
+        }else if(collision.gameObject.tag == "Rock")
+        {
+            //aca deberia ir la animacion de muerte
+            //y devolver al last check point
+            Destroy(player.gameObject);
+        }
     }
 
-    //gira sobre si mismo
-    IEnumerator TurnAround()
+
+    IEnumerator DesactiveCollider()
     {
-        dir = !dir;
-
-        yield return new WaitForSeconds(delay);
-        if (dir)
-            transform.eulerAngles = new Vector2(0f, 0f);
-        else transform.eulerAngles = new Vector2(0f, 180f);
-
-    }
-
-    IEnumerator Attack()
-    {
-        //moverse a la izquierda
-        if (start.position.x - end.position.x >= 0f && Vector3.Distance(transform.position,aux.position) <= maxDist)
-        {
-            //espera,rota y vuelve al anterior
-            transform.Translate(Vector3.forward * Time.deltaTime);
-        }
-        else
-        {
-            //retorna
-            transform.position = Vector3.MoveTowards(transform.position, aux.position, Time.deltaTime);
-        }
-        //moverse a la derecha
-        if (start.position.x - end.position.x < 0f && Vector3.Distance(transform.position, aux.position) <= maxDist)
-        {
-            //espera,rota y vuelve al anterior
-            transform.Translate(Vector3.forward * Time.deltaTime);
-        }
-        else
-        {
-            //retorna
-            transform.position = Vector3.MoveTowards(transform.position, aux.position, Time.deltaTime);
-        }
-        yield return new WaitForSeconds(delay);
-
+        stunned = true;
+        rb.isKinematic = true;
+        c2D.enabled = false;
+        blind.enabled = true;
+        yield return new WaitForSeconds(stunnedDelay);
+        rb.isKinematic = false;
+        c2D.enabled = true;
+        stunned = false;
+        blind.enabled = false;
+        StopCoroutine(DesactiveCollider());
     }
 
 }
