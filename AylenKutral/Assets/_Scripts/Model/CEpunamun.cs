@@ -138,10 +138,10 @@ public class CEpunamun : MonoBehaviour {
     {
         //cambia a estado de stun y deja pasar al target
         //aqui debiera haber una animacion de stuneado
-        if (collision.gameObject.tag == "MyPlayer")
+        if (collision.gameObject.tag == "Rock")
         {
             StartCoroutine(DesactiveCollider());
-        }else if(collision.gameObject.tag == "Rock")
+        }else if(collision.gameObject.tag == "MyPlayer")
         {
             //aca deberia ir la animacion de muerte
             //y devolver al last check point
