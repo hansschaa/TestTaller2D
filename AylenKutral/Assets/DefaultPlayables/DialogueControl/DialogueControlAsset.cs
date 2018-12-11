@@ -7,9 +7,7 @@ using Yarn.Unity;
 public class DialogueControlAsset : PlayableAsset 
 {
 	public ExposedReference<DialogueRunner> dialogueRunner;
-	public TextAsset textAsset;
-	public Vector3 otherPersonPosition;
-    public bool isFinal;
+	public string nodeStart;
 
    public override Playable CreatePlayable (PlayableGraph graph, GameObject owner)
    {
@@ -19,9 +17,8 @@ public class DialogueControlAsset : PlayableAsset
 
 		dialogueControlBehaviour.dialogueRunner = dialogueRunner.Resolve(graph.GetResolver());
 
-		dialogueControlBehaviour.textAsset = textAsset;
-        dialogueControlBehaviour.otherPersonPosition = otherPersonPosition;
-        dialogueControlBehaviour.isFinal = isFinal;
+        dialogueControlBehaviour.nodeStart = nodeStart;
+
        //dr1 = dialogueRunner.Resolve(graph.GetResolver());
 
        return playable;   

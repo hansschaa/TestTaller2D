@@ -6,6 +6,7 @@ public class GameStateManager : MonoBehaviour
 {
 	public static EGameState eGameState;
 
+	
 	void Start()
 	{
 		eGameState = EGameState.NORMAL;

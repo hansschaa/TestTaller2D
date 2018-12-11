@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4780827592763316}
   - component: {fileID: 114312845326300058}
-  - component: {fileID: 68674755487554506}
+  - component: {fileID: 61969934418831580}
   m_Layer: 11
   m_Name: EffectorLadder
   m_TagString: Ladder
@@ -81,7 +81,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1429262994724518}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 81.02, y: 6.97, z: 0}
+  m_LocalPosition: {x: 81.02, y: 7.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4965071852995722}
@@ -102,8 +102,8 @@ Transform:
   m_Father: {fileID: 4780827592763316}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!68 &68674755487554506
-EdgeCollider2D:
+--- !u!61 &61969934418831580
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -114,11 +114,19 @@ EdgeCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.7105026, y: 2.051168}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.6394653, y: 7.784585}
   m_EdgeRadius: 0
-  m_Points:
-  - {x: 0.49549103, y: -5.034096}
-  - {x: 0.51223755, y: 5.8619046}
 --- !u!114 &114312845326300058
 MonoBehaviour:
   m_ObjectHideFlags: 1

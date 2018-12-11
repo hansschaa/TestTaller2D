@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using Yarn.Unity.Example;
 
 public class CPlayerController : MonoBehaviour 
 {
@@ -36,6 +37,7 @@ public class CPlayerController : MonoBehaviour
     public EState eState;
 	private CPlayerInput cPlayerInput;
     public LayerMask m_WhatIsWater;
+
 
     private void Awake()
 	{	
@@ -73,13 +75,27 @@ public class CPlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+
 		bool wasGrounded = m_Grounded;
+
 		
 		//m_Grounded = false;
 
 		
 
 		raycasthit2d = Physics2D.Raycast(m_GroundCheck.position, Vector3.down , .5f, m_WhatIsGround);
+
+		if(!m_Grounded && raycasthit2d)
+		{
+			//Check the y Velocity
+			if(m_Rigidbody2D.velocity.y < -30)
+			{
+				print("Die");
+				cPlayerInput.crouch = false;
+				cPlayerInput.onDie = true;
+
+			}
+		}
 		//print(raycasthit2d);
 		//Raycast collision whit ground gameObject
 		
@@ -289,14 +305,22 @@ public class CPlayerController : MonoBehaviour
 	void OnEnable()
     {
         CGameOverController.OnGameOver += goToLastSave;
+		ExampleDialogueUI.OnDialogueComplete += OnFinishDialogue;
     }
     
     void OnDisable()
     {
         CGameOverController.OnGameOver -= goToLastSave;
+		ExampleDialogueUI.OnDialogueComplete -= OnFinishDialogue;
     }
 
-	public void goToLastSave()
+    private void OnFinishDialogue()
+    {
+        eInputMode = EInputMode.FREEMOVEMENT;
+		m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    public void goToLastSave()
 	{
 		this.transform.position = lastSavePoint.GetComponent<CSavePoint>().position;
 	}

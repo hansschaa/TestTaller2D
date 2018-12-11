@@ -12,6 +12,15 @@ public class TitleAnimation : MonoBehaviour
 	public TextMeshProUGUI title;
 	public TextMeshProUGUI buttonForPlay;
 
+	#region  "Events"
+	public delegate void CutSceneDelegate();
+
+	public static event CutSceneDelegate OnCutScene;
+	
+
+	#endregion
+
+
 	[Header("PlayableDirector")]
 	public UnityEngine.Playables.PlayableDirector earthquakePlayable;
 
@@ -61,30 +70,18 @@ public class TitleAnimation : MonoBehaviour
 		_inSceneSequence = DOTween.Sequence();
 		_inStartSequence = DOTween.Sequence();
 	
-
-		//DOTween.To(()=> title.outlineWidth, x => title.outlineWidth = x, 0, 2.5f).SetEase(Ease.Linear);
-		
-		//b = buttonForPlay.DOFade(1,1.5f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo);
 		Tween a = DOTween.To(()=> title.outlineWidth, x => title.outlineWidth = x, 0, 2.5f).SetEase(Ease.Linear);
 		_inSceneSequence.Append(a).AppendCallback(()=> 
 		{
             b = buttonForPlay.DOFade(1,1.5f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo);
         });
-
-		//_inSceneSequence.Play();
-		 
-		
-	
-
 		
 	}
 
-	/// <summary>
-	/// Update is called every frame, if the MonoBehaviour is enabled.
-	/// </summary>
+
 	void Update()
 	{
-		if(this.player.GetButtonDown("Start"))
+		if(this.player.GetButtonDown("Start") && GameStateManager.eGameState != EGameState.CUTSCENE)
 		{
 			GameStateManager.eGameState = EGameState.CUTSCENE;
 
@@ -95,15 +92,21 @@ public class TitleAnimation : MonoBehaviour
 			Join(title.DOFade(0,1f).SetEase(Ease.Linear).OnComplete(()=> {
                InitializeCameraTransition();
             }));
-			//_inStartSequence.Play(); 
-			//buttonForPlay.DOFade(1,.5f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
-			//_inStartSequence.Play();
+
 		}
 	}
 
     private void InitializeCameraTransition()
     {
-		
+		if(OnCutScene!=null)
+		{
+			print("Inicializando barras");
+			OnCutScene();
+		}
+			
+
+
         earthquakePlayable.Play();
+		
     }
 }

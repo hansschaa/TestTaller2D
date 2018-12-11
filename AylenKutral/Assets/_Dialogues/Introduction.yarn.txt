@@ -1,0 +1,60 @@
+title: Start
+tags: 
+colorID: 0
+position: 757,211
+---
+Empty Text
+===
+title: Introduction
+tags: 
+colorID: 0
+position: 99,217
+---
+<<ChangeCurrentTalker NPCManager 1>>
+Newen!
+Nose que ha pasado ...
+<<ChangeCurrentTalker NPCManager 0>>
+Tampoco yo... 
+El Nuyumapun fue muy fuerte
+<<ChangeCurrentTalker NPCManager 1>>
+El desequilibrio cósmico ha provocado éstos desastres
+Necesitamos volver fuerte los lazos con el Wenu Mapu...
+<<ChangeCurrentTalker NPCManager 2>>
+Necesitamos tu ayuda Newen!
+Nosotros debemos avisar a las demás villas
+Para que realizemos el Nguillatún...
+<<ChangeCurrentTalker NPCManager 0>>
+No creo que pueda resolver esta crisis
+Soy débil...
+<<ChangeCurrentTalker NPCManager 2>>
+Pero Newen te necesitamos!
+<<ChangeCurrentTalker NPCManager 0>>
+Lo siento Lonco...
+No soy bueno para nada...
+Sólo soy alguien más en éste Nag Mapu...
+===
+title: MachiDialogue
+tags: 
+colorID: 0
+position: -18,442
+---
+<<ChangeCurrentTalker NPCManager 1>>
+Si tan solo nos ayudaras...
+Dicen que en el bosque puedes escontrar la respuesta
+<<ChangeCurrentTalker NPCManager 0>>
+No lo haré...
+Soy el peor mapuche que puede ser escogido
+para unir el Wen y Nag mapu
+===
+title: TokiDialogue
+tags: 
+colorID: 0
+position: 227,444
+---
+<<ChangeCurrentTalker NPCManager 2>>
+No pensé que llegaríamos a ésta situación
+<<ChangeCurrentTalker NPCManager 0>>
+Algunas casas quedaron en escombros
+<<ChangeCurrentTalker NPCManager 2>>
+Hay que ayudarlos...
+===

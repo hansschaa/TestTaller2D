@@ -5,15 +5,13 @@ using Yarn.Unity;
 public class DialogueControlBehaviour : PlayableBehaviour 
 {
 	public DialogueRunner dialogueRunner = null;
-	public TextAsset textAsset;
-	public Vector3 otherPersonPosition;
-	public bool isFinal;
+	public string nodeStart;
 
 	public override void OnBehaviourPlay(Playable playable , FrameData info)
 	{
 		if(dialogueRunner != null)
 		{
-			dialogueRunner.ShowDialog(otherPersonPosition,textAsset,isFinal);
+			dialogueRunner.StartDialogue(nodeStart);
 		}
 	}
 

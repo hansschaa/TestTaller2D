@@ -1,0 +1,41 @@
+title: Start
+tags: 
+colorID: 0
+position: 90,219
+---
+Empty Text
+===
+title: Anchimallen
+tags: 
+colorID: 0
+position: 549,226
+---
+<<ChangeCurrentTalker NPCManager 1>>
+Hola Newen
+<<ChangeCurrentTalker NPCManager 0>>
+Qué!? ¿sabes mi nombre?
+<<ChangeCurrentTalker NPCManager 1>>
+Si, me llamo Anchimallen
+Un espíritu que aparece para advertir al pueblo mapuche
+Y ayudar a quien lo encuentre
+Quiero contarte que cosas malas ocurrirán
+<<ChangeCurrentTalker NPCManager 0>>
+Algo así supuse, los temblores han sido fuertes
+<<ChangeCurrentTalker NPCManager 1>>
+Así es, debes ayudar a tu pueblo
+<<ChangeCurrentTalker NPCManager 0>>
+No creo que sea capaz de ello
+<<ChangeCurrentTalker NPCManager 1>>
+No puedes ir en contra del Minche mapu
+Es deseo de Ngen, El, Pillán y Wangülén 
+<<ChangeCurrentTalker NPCManager 0>>
+ah! no puedo creer que ellos piensen en mí
+<<ChangeCurrentTalker NPCManager 1>>
+Sí Nahuel, yo te puedo ayudar
+Juntos volveremos mas fuerte el lazo entre el Nag mapu y el Wenu mapu
+<<ChangeCurrentTalker NPCManager 0>>
+Está bien, me has convencido
+<<ChangeCurrentTalker NPCManager 1>>
+Pues vamos!
+<<AddSpirit SpiritManager 0>>
+===
