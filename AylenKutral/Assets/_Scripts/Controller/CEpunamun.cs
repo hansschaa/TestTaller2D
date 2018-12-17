@@ -157,12 +157,15 @@ public class CEpunamun : MonoBehaviour
         if (collision.gameObject.tag == "MyPlayer")
         {
             StartCoroutine(DesactiveCollider());
-        }else if(collision.gameObject.tag == "Rock")
+        }
+        
+        /* 
+        else if(collision.gameObject.tag == "Rock")
         {
             //aca deberia ir la animacion de muerte
             //y devolver al last check point
             Destroy(player.gameObject);
-        }
+        }*/
     }
 
 

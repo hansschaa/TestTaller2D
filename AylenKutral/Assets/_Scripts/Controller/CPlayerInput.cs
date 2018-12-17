@@ -19,7 +19,7 @@ public class CPlayerInput : MonoBehaviour
 	[Header("Scripts Variables")]
 	public CPlayerController cPlayerController;
 	public CInventario cInventario;
-	private CPlayerAnimation _cPlayerAnimation;
+	public CPlayerAnimation _cPlayerAnimation;
 
 
 
@@ -471,6 +471,8 @@ public class CPlayerInput : MonoBehaviour
 
 		else if (other.CompareTag("HideZone") && player.GetButtonDown("Action") && !_onHide)
 		{
+			//this._rb.constraints = RigidbodyConstraints2D.FreezeAll;
+			//this._rb.constraints = RigidbodyConstraints2D.FreezePositionY;
 			this._rb.velocity = Vector2.zero;
 			jump = false;
 			this.transform.GetChild(0).gameObject.SetActive(false);
@@ -480,6 +482,7 @@ public class CPlayerInput : MonoBehaviour
 
 		else if(other.CompareTag("HideZone") && player.GetButtonDown("Action") && _onHide)
 		{
+			//this._rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 			_onHide = false;
 			this.transform.GetChild(0).gameObject.SetActive(true);
 			this.transform.GetChild(1).gameObject.SetActive(false);

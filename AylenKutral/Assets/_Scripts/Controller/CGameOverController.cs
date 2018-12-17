@@ -8,7 +8,7 @@ public class CGameOverController : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.CompareTag("Player") && OnGameOver != null)
+		if(other.CompareTag("MyPlayer") && OnGameOver != null)
                 OnGameOver();
 	}
 

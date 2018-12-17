@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Yarn.Unity.Example;
+using UnityEngine.SceneManagement;
 
 public class CPlayerController : MonoBehaviour 
 {
@@ -17,6 +18,7 @@ public class CPlayerController : MonoBehaviour
 	[SerializeField] private CapsuleCollider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
 	[SerializeField] private Collider2D m_CrouchAbleCollider;				    // A collider that will be abled when crouching
 
+	public GameObject arbolCaido1;
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     public bool m_Grounded;
 	public bool m_OnWater;
@@ -48,6 +50,8 @@ public class CPlayerController : MonoBehaviour
 		//textureWidth = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
 	}
 
+	
+
 	/// <summary>
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
@@ -71,6 +75,10 @@ public class CPlayerController : MonoBehaviour
 		}
 	}
 
+	public void goToScene()
+	{
+		SceneManager.LoadScene(1);
+	}
 	
 
 	private void FixedUpdate()
@@ -94,8 +102,14 @@ public class CPlayerController : MonoBehaviour
 				cPlayerInput.crouch = false;
 				cPlayerInput.onDie = true;
 
+				Invoke("goToScene", 2f);
+
 			}
 		}
+
+
+		
+
 		//print(raycasthit2d);
 		//Raycast collision whit ground gameObject
 		
@@ -282,6 +296,8 @@ public class CPlayerController : MonoBehaviour
 				lastSavePoint = other.gameObject.GetComponent<CSavePoint>();
 		}	
 
+		
+
 		/* 
 		if(other.CompareTag("Water"))
 		{
@@ -289,6 +305,21 @@ public class CPlayerController : MonoBehaviour
 			eInputMode = EInputMode.SWIM;
 			
 		}*/
+	}
+
+	/// <summary>
+	/// Sent when an incoming collider makes contact with this object's
+	/// collider (2D physics only).
+	/// </summary>
+	/// <param name="other">The Collision2D data associated with this collision.</param>
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		if(other.gameObject.CompareTag("Enemy/Movil"))
+		{
+			
+			goToLastSave();
+		}	
+		
 	}
 
 	/* 
@@ -322,10 +353,15 @@ public class CPlayerController : MonoBehaviour
 
     public void goToLastSave()
 	{
+		
+		cPlayerInput.onDie = false;
+		cPlayerInput._cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.IDLE, "Idle");
 		this.transform.position = lastSavePoint.GetComponent<CSavePoint>().position;
 	}
 
-	public Collider2D CheckGroundHeadCollision()
+  
+
+    public Collider2D CheckGroundHeadCollision()
 	{
 		return Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround);
 	}

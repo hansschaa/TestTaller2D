@@ -16,7 +16,8 @@ public class CCircleRegion : MonoBehaviour
 	{
 		if(other.CompareTag("Enemy/Movil"))
 		{
-			other.GetComponent<SpriteRenderer>().color = Color.red;
+			//other.GetComponent<SpriteRenderer>().color = Color.red;
+			other.GetComponent<CEpunamunBehaviour>().Stunned();
 		}
 	}
 }

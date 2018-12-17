@@ -15,8 +15,10 @@ public class CSimplePath : MonoBehaviour
 
     public UnityArmatureComponent unityArmatureComponent;
 
+
     public bool m_FacingLeft;
     public bool inDelay;
+    protected Coroutine waitCoroutine;
 
 
     private void Start()
@@ -26,16 +28,21 @@ public class CSimplePath : MonoBehaviour
         inDelay = false;
     }
 
-    private void Update()
+    public virtual void Update()
     {
         if(!inDelay)
+        {
+            print("WayPoit: " + waypointIndex);
+            print("Move");
             Move();
+        }
+            
     }
 
-    private void Move()
+    protected void Move()
     {
 
-        if (Mathf.Abs(Vector3.Distance(transform.position , waypoints[waypointIndex])) > .5f)
+        if (Mathf.Abs(Vector3.Distance(transform.position , waypoints[waypointIndex])) > 1f)
             transform.position = Vector2.MoveTowards(transform.position,waypoints[waypointIndex],moveSpeed * Time.deltaTime); 
         
 
@@ -69,17 +76,13 @@ public class CSimplePath : MonoBehaviour
 
             }
 
-            
 
-            
-
-            StartCoroutine(Wait(delayMovement));
-            unityArmatureComponent.armature.flipX = !m_FacingLeft;
+            waitCoroutine = StartCoroutine(Wait(delayMovement));
 
             if (waypointIndex == waypoints.Length - 1) 
                 waypointIndex = 0;
 
-            else 
+            if(waypointIndex < waypoints.Length - 1)
                 waypointIndex++;
 
             
@@ -89,8 +92,26 @@ public class CSimplePath : MonoBehaviour
 
     IEnumerator Wait(float seconds)
     {
+       
         inDelay = true;
         yield return new WaitForSeconds(seconds);
         inDelay = false;
+
+        if(unityArmatureComponent != null)
+                unityArmatureComponent.armature.flipX = !m_FacingLeft;
+
+        else
+        {
+            if(m_FacingLeft)
+            {
+                transform.localScale = new Vector3(1,1,1);
+            }
+
+            else
+            {
+                transform.localScale = new Vector3(-1,1,1);
+            }
+        }
+
     }
 }

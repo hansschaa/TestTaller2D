@@ -83,7 +83,7 @@ namespace Yarn.Unity.Example {
 
         /// How quickly to show the text, in seconds per character
         [Tooltip("How quickly to show the text, in seconds per character")]
-        public float textSpeed = 0.025f;
+        public float textSpeed = 0f;
 
         /// The buttons that let the user choose an option
         public List<Button> optionButtons;
@@ -212,7 +212,7 @@ namespace Yarn.Unity.Example {
         public override IEnumerator DialogueStarted ()
         {
             Debug.Log ("Dialogue starting!");
-
+           
             //ChangeTextBoxPosition();
 
             // Enable the dialogue controls.

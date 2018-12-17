@@ -52,7 +52,7 @@ public class CAnchimallenController : MonoBehaviour ,ISpirit
          //Animation when the distance is more than 1 and the Spiriit need getting closer to player
         if(Math.Abs(Vector2.Distance(playerAnchimallenPosition.position,this.transform.position)) > 1f )
         {
-            print("Mover hasta la posición");
+            //print("Mover hasta la posición");
             transform.position = Vector3.Lerp(transform.position,new Vector3(playerAnchimallenPosition.position.x,playerAnchimallenPosition.position.y + Mathf.Sin(Time.time), 0.0f), velocityMovement*Time.deltaTime);
             
             if(isFliped)
