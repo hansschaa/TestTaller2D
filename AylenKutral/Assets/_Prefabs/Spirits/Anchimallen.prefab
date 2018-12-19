@@ -38,11 +38,26 @@ GameObject:
   - component: {fileID: 4670895095803710}
   - component: {fileID: 212213763354169070}
   - component: {fileID: 95698562766850750}
-  - component: {fileID: 114359638152349272}
   - component: {fileID: 114594254151763562}
   - component: {fileID: 114414676541159672}
   m_Layer: 8
   m_Name: Anchimallen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1397142183175910
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4320336680100124}
+  - component: {fileID: 108145108687570154}
+  m_Layer: 8
+  m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,6 +92,19 @@ Transform:
   m_Father: {fileID: 4670895095803710}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!4 &4320336680100124
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1397142183175910}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.6, y: 0, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4670895095803710}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4448214765805762
 Transform:
   m_ObjectHideFlags: 1
@@ -84,7 +112,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1623774494674110}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.2, y: -3.07, z: 0}
+  m_LocalPosition: {x: 0.1, y: -3.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4670895095803710}
@@ -97,11 +125,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1374135314908684}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 386.61, y: -42.68, z: 0}
+  m_LocalPosition: {x: 21.55, y: 2.737049, z: 16.958076}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4448214765805762}
   - {fileID: 4226376021937458}
+  - {fileID: 4320336680100124}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -176,8 +205,8 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.33501992
       - serializedVersion: 3
-        time: 0.48775983
-        value: 0.46747893
+        time: 0.32662702
+        value: 0.25338286
         inSlope: -0.8827175
         outSlope: -0.8827175
         tangentMode: 0
@@ -198,24 +227,24 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.972549, g: 0.5686275, b: 0.19607843, a: 1}
-      key1: {r: 0.972549, g: 0.8942689, b: 0.19607842, a: 0.54901963}
-      key2: {r: 0.972549, g: 0.5686275, b: 0.19607843, a: 0.54901963}
+      key0: {r: 0.96862745, g: 0.5686275, b: 0.19607843, a: 0.88235295}
+      key1: {r: 1, g: 1, b: 1, a: 0.78431374}
+      key2: {r: 1, g: 1, b: 1, a: 0.54901963}
       key3: {r: 1, g: 1, b: 1, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 1157
-      ctime1: 30840
-      ctime2: 48573
+      ctime0: 47995
+      ctime1: 65535
+      ctime2: 65535
       ctime3: 65535
       ctime4: 0
       ctime5: 0
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
+      atime1: 30840
       atime2: 65535
       atime3: 65535
       atime4: 0
@@ -223,8 +252,8 @@ TrailRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_NumColorKeys: 4
-      m_NumAlphaKeys: 2
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 3
     numCornerVertices: 90
     numCapVertices: 90
     alignment: 0
@@ -233,7 +262,44 @@ TrailRenderer:
   m_MinVertexDistance: 0
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!114 &114359638152349272
+--- !u!108 &108145108687570154
+Light:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1397142183175910}
+  m_Enabled: 1
+  serializedVersion: 8
+  m_Type: 2
+  m_Color: {r: 1, g: 0.62614334, b: 0, a: 1}
+  m_Intensity: 3
+  m_Range: 34.3
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+--- !u!114 &114414676541159672
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -241,35 +307,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1374135314908684}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc772dc55b5b56d49bd030f35e5f7f35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ForceMaterial: {fileID: 0}
-  ActiveChange: 1
-  _Alpha: 1
-  _Color: {r: 1, g: 0.60447556, b: 0, a: 1}
-  Seed: 1
-  Desintegration: 0
-  ShaderChange: 0
---- !u!114 &114414676541159672
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1374135314908684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9bb6c180ca028584888d336317f66fb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ForceMaterial: {fileID: 0}
   ActiveChange: 1
   _Alpha: 1
-  _offset: 0.808
-  _ClipLeft: 0
-  _ClipRight: 0
-  _ClipUp: 0
-  _ClipDown: 0.177
+  _offset: 0.4
+  _ClipLeft: 0.4
+  _ClipRight: 0.2
+  _ClipUp: 0.1
+  _ClipDown: 0.5
   ShaderChange: 0
 --- !u!114 &114594254151763562
 MonoBehaviour:
@@ -282,10 +330,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ae01586bd4943e8a0c896eec55aee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAnchimallenPosition: {fileID: 0}
-  velocityMovement: 0.8
+  eSpirit: 0
+  spiritUIImage: {fileID: 0}
+  ccAbility: 0.005
+  velocityMovement: 4
+  playerSpiritPosition: {fileID: 0}
   cPlayerController: {fileID: 0}
   isFliped: 0
+  circleRegion: {fileID: 1295119839904418, guid: cd2e3272603154888b23465aae13d1b8,
+    type: 2}
 --- !u!198 &198823952843127222
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -472,7 +525,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9725491, g: 0.5686275, b: 0.19607845, a: 1}
+      maxColor: {r: 0.9686275, g: 0.5686275, b: 0.19607845, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4891,7 +4944,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4908,8 +4961,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1381720163
-  m_SortingLayer: 3
+  m_SortingLayerID: -1055963401
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a34e97f9c8d29453c9414cfbfb3fea45, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

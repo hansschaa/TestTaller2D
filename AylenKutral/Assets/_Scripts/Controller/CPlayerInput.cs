@@ -60,6 +60,7 @@ public class CPlayerInput : MonoBehaviour
 	public bool onDie;
 
 
+
     [Header("Collision Parameters")]
 	[SerializeField] private LayerMask m_WhatIsInteractiveObjects;	
 	public GameObject currentInteractiveObject;	
@@ -207,8 +208,6 @@ public class CPlayerInput : MonoBehaviour
 
 			#endregion
 
-
-
 			#region "Caught Object Input"
 			if (currentInteractiveObject == null && !_onHide && !cPlayerController.m_OnWater)
 			{
@@ -265,8 +264,12 @@ public class CPlayerInput : MonoBehaviour
 			if(cPlayerController.eInputMode == EInputMode.SWIM)
 			{
 				
-				verticalMove = this.player.GetAxisRaw("Move Vertical");
+				
+				verticalMove = this.player.GetAxisRaw("Move Vertical") ;
 				horizontalMove = this.player.GetAxisRaw("Move Horizontal") * walkSpeed * runSpeed;
+
+
+				
 
 				/* 
 				if(this.player.GetButtonDown("Dive") && !onDive)
@@ -290,6 +293,31 @@ public class CPlayerInput : MonoBehaviour
 
 
 			}
+			#endregion
+
+			#region "Hinge Input"
+			if(cPlayerController.eInputMode ==  EInputMode.INHINGE)
+			{
+				if(this.player.GetNegativeButton("Move Horizontal") )
+				{
+					this._rb.velocity -= new Vector2(.25f,0);
+				}
+
+				else if(this.player.GetButton("Move Horizontal") )
+				{
+					this._rb.velocity += new Vector2(.25f,0);
+				}
+
+				if(this.player.GetButtonDown("Jump") )
+				{
+					print("Jump");
+					cPlayerController.DisengageToHinge();
+				}
+
+			}
+			
+
+
 			#endregion
 
 			#region "Update Animation"
@@ -406,6 +434,7 @@ public class CPlayerInput : MonoBehaviour
 	{
 		if(GameStateManager.eGameState != EGameState.CUTSCENE && (cPlayerController.eInputMode == EInputMode.FREEMOVEMENT || cPlayerController.eInputMode == EInputMode.SWIM) && !_onHide)
 		{
+			
 			cPlayerController.Move(horizontalMove * Time.deltaTime, _caughtToObject, crouch,jump);
 			jump = false;
 		}
@@ -443,7 +472,28 @@ public class CPlayerInput : MonoBehaviour
 
 		}
 
-		
+		if(other.CompareTag("ActionObject") && this.player.GetButtonDown("Action"))
+		{
+			other.GetComponent<CAction>().OnUse(this);
+
+		}
+
+		else if (other.CompareTag("Ladder") && !onLadder 
+		//&& stregthBarImage.fillAmount >= climbReduction * 4 
+		)
+		{
+			if(this.player.GetAxisRaw("Move Vertical") != 0)
+			{
+				print("Baajar");
+				_rb.gravityScale = 0;
+				onLadder = true;
+				other.GetComponent<CLadderController>().effectorCollider.enabled = false;
+				//_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.CLIMB,"Climb",1,0,0.05f);
+			}
+
+		}
+
+		/* 
 		else if (other.CompareTag("Ladder") && !onLadder 
 		//&& stregthBarImage.fillAmount >= climbReduction * 4 
 		&& (cPlayerController.m_Grounded || cPlayerController.m_OnWater))
@@ -457,15 +507,15 @@ public class CPlayerInput : MonoBehaviour
 				//_cPlayerAnimation.ChangeAnimation(EPlayerAnimationState.CLIMB,"Climb",1,0,0.05f);
 			}
 
-		}
+		}*/
 
 		else if (other.CompareTag("Ladder") && onLadder) 
 		{
 				if(this.player.GetAxisRaw("Move Vertical") != 0)
-					_rb.velocity = new Vector2(_rb.velocity.x, this.player.GetAxisRaw("Move Vertical") * climbVelocity);
+					_rb.velocity = new Vector2(0, this.player.GetAxisRaw("Move Vertical") * climbVelocity);
 
 				else if(this.player.GetAxisRaw("Move Vertical") == 0)
-					_rb.velocity = new Vector2(_rb.velocity.x,0);
+					_rb.velocity = new Vector2(0,0);
 				
 		}
 

@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 public class CPlayerController : MonoBehaviour 
 {
 
+	[Header ("Managers")]
+	public CSpiritManager cSpiritManager;
+
+
 	private CSavePoint lastSavePoint;
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
 	[Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;			// Amount of maxSpeed applied to crouching movement. 1 = 100%
@@ -47,7 +51,6 @@ public class CPlayerController : MonoBehaviour
         eState = EState.NORMAL;
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		cPlayerInput = this.GetComponent<CPlayerInput>();
-		//textureWidth = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
 	}
 
 	
@@ -61,6 +64,8 @@ public class CPlayerController : MonoBehaviour
 		m_OnWater =  Physics2D.Raycast(m_CeilingCheck.position, Vector3.down , 1.5f, m_WhatIsWater);
 		if(eInputMode == EInputMode.FREEMOVEMENT && m_OnWater)
 		{
+			cSpiritManager.TemporalyAnchimallenDissapear();
+			//cSpiritManager.ChangeSpirit(ESpirit.NONE);
 			eInputMode = EInputMode.SWIM;
 			ChangeColliderOrientation(false);
 		}
@@ -71,11 +76,12 @@ public class CPlayerController : MonoBehaviour
 		{
 			ChangeColliderOrientation(true);
 			//m_Rigidbody2D.gravityScale = 3;
+			cSpiritManager.ActivateAnchimallen();
 			eInputMode = EInputMode.FREEMOVEMENT;
 		}
 	}
 
-	public void goToScene()
+    public void goToScene()
 	{
 		SceneManager.LoadScene(1);
 	}
@@ -85,12 +91,6 @@ public class CPlayerController : MonoBehaviour
 	{
 
 		bool wasGrounded = m_Grounded;
-
-		
-		//m_Grounded = false;
-
-		
-
 		raycasthit2d = Physics2D.Raycast(m_GroundCheck.position, Vector3.down , .5f, m_WhatIsGround);
 
 		if(!m_Grounded && raycasthit2d)
@@ -296,6 +296,10 @@ public class CPlayerController : MonoBehaviour
 				lastSavePoint = other.gameObject.GetComponent<CSavePoint>();
 		}	
 
+		if(other.CompareTag("Hinge"))
+		{
+			AttachToHinge(other.gameObject);
+		}
 		
 
 		/* 
@@ -307,12 +311,42 @@ public class CPlayerController : MonoBehaviour
 		}*/
 	}
 
-	/// <summary>
-	/// Sent when an incoming collider makes contact with this object's
-	/// collider (2D physics only).
-	/// </summary>
-	/// <param name="other">The Collision2D data associated with this collision.</param>
-	void OnCollisionEnter2D(Collision2D other)
+    private void AttachToHinge(GameObject gameObject)
+    {
+		gameObject.GetComponent<Collider2D>().enabled = false;
+
+		this.GetComponent<HingeJoint2D>().connectedBody = gameObject.GetComponent<Rigidbody2D>();
+		this.GetComponent<DistanceJoint2D>().connectedBody = gameObject.transform.parent.transform.GetChild(0).GetComponent<Rigidbody2D>();
+
+        this.GetComponent<HingeJoint2D>().enabled = true;
+		this.GetComponent<DistanceJoint2D>().enabled = true;
+		
+		eInputMode = EInputMode.INHINGE;
+    }
+
+    internal void DisengageToHinge()
+    {
+		eInputMode = EInputMode.FREEMOVEMENT;
+
+		m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+
+		this.GetComponent<HingeJoint2D>().enabled = false;
+		this.GetComponent<DistanceJoint2D>().enabled = false;
+
+		this.GetComponent<HingeJoint2D>().connectedBody = null;
+		this.GetComponent<DistanceJoint2D>().connectedBody = null;
+
+        
+
+        
+    }
+
+    /// <summary>
+    /// Sent when an incoming collider makes contact with this object's
+    /// collider (2D physics only).
+    /// </summary>
+    /// <param name="other">The Collision2D data associated with this collision.</param>
+    void OnCollisionEnter2D(Collision2D other)
 	{
 		if(other.gameObject.CompareTag("Enemy/Movil"))
 		{

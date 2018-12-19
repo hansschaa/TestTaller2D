@@ -31,11 +31,8 @@ public class CSimplePath : MonoBehaviour
     public virtual void Update()
     {
         if(!inDelay)
-        {
-            print("WayPoit: " + waypointIndex);
-            print("Move");
             Move();
-        }
+        
             
     }
 

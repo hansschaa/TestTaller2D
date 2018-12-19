@@ -2,5 +2,5 @@
 
 public enum ESpirit {
 
-    ANCHIMALLEN,OTHER
+    ANCHIMALLEN,OTHER,NONE
 }

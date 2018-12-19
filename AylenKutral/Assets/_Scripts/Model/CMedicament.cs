@@ -6,6 +6,6 @@ public class CMedicament : MonoBehaviour, IInventoryIcon
 {
     public void OnUse()
     {
-		print("Usar Medicamento");
+		  print("Usar Medicamento");
     }
 }

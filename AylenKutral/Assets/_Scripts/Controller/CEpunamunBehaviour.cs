@@ -232,7 +232,7 @@ public class CEpunamunBehaviour : MonoBehaviour
 		stunnedVisualEffect.enabled = false;
 		_eEpunamunState = _lastEpunamunState;
 		_childAnimator.speed = 1;
-		
-        
     }
+
+	
 }

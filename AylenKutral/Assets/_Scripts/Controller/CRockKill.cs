@@ -17,7 +17,9 @@ public class CRockKill : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+    {
+
         if (this.gameObject.transform.position.y <= -1000) Destroy(this.gameObject);
         //print(parent.position);
     }

@@ -2,24 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CAnchimallenController : MonoBehaviour ,ISpirit
+public class CAnchimallenController : CSpirit ,ISpirit
 {
-    [Header ("Spirit Movement")]
-    public float velocityMovement;
-	public Transform playerAnchimallenPosition;
-    public CPlayerController cPlayerController;
-    public bool isFliped;
-
-
+ 
     [Header ("Ability")]
     public GameObject circleRegion;
 
-    void OnDrawGizmos()
-    {
-        
-       
-    }
 
     /// <summary>
     /// This function is called when the object becomes enabled and active.
@@ -40,55 +30,13 @@ public class CAnchimallenController : MonoBehaviour ,ISpirit
 
     public void OnActiveAbility()
     {
-        print("usar habilidad");
-        Instantiate(circleRegion, transform.position, Quaternion.identity);
-    }
-
-
-
-    void Update () 
-    {
-        
-         //Animation when the distance is more than 1 and the Spiriit need getting closer to player
-        if(Math.Abs(Vector2.Distance(playerAnchimallenPosition.position,this.transform.position)) > 1f )
+        if(spiritUIImage.fillAmount == 1)
         {
-            //print("Mover hasta la posición");
-            transform.position = Vector3.Lerp(transform.position,new Vector3(playerAnchimallenPosition.position.x,playerAnchimallenPosition.position.y + Mathf.Sin(Time.time), 0.0f), velocityMovement*Time.deltaTime);
-            
-            if(isFliped)
-            {
-                isFliped=false;
-            }
+            print("usar habilidad");
+            Instantiate(circleRegion, transform.position, Quaternion.identity);
+            spiritUIImage.transform.parent.transform.localScale = Vector3.one;
+            spiritUIImage.fillAmount = 0;
         }
-
-        //Animation when the distance is less than 1
-        else
-        {
-            transform.position = Vector3.Lerp(transform.position,new Vector3(transform.position.x,playerAnchimallenPosition.position.y + Mathf.Sin(Time.time), 0.0f), velocityMovement*Time.deltaTime);
-            
-            if(!isFliped)
-            {
-                isFliped = true;
-                if(cPlayerController.m_FacingRight)
-                {
-                    this.GetComponent<SpriteRenderer>().flipX = true;
-                    //this.transform.GetChild(0).gameObject.transform.position -= new Vector3(.25f,0,0);
-
-                }
-
-                else
-                {
-                    this.GetComponent<SpriteRenderer>().flipX = false;
-                    //this.transform.GetChild(0).gameObject.transform.position += new Vector3(.25f,0,0);
-                    
-                }
-                
-            }
-        }
-
-
         
     }
-
-   
 }

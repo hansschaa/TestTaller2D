@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,14 +12,17 @@ public class CSpiritManager : MonoBehaviour
 	public Sprite activeSpirit;
 
 
-	ESpirit currentSpirit; 
+	
 
-	[Header ("SpiritsInWorld")]
-	public GameObject[] spirits;
+	[Header ("SpiritsGroup")]
+	public Transform spiritsGroup;
+	public GameObject[] spiritsToInvoke;
 
 
 	[Header ("Other")]
 	public Transform playerTransform;
+	public ESpirit currentSpirit; 
+	public CNPCManager cNPCManager;
 
 	public void InvokeSpirit(ESpirit eSpirit)
 	{
@@ -47,13 +51,27 @@ public class CSpiritManager : MonoBehaviour
 	[YarnCommand("AddSpirit")]
     public void AddSpirit(string spiritId) 
 	{
+
 		//Convert the text command of text asset file (dialogue) to int data
 		int id = System.Int32.Parse(spiritId);
 		
-		UpdateCurrentSpirit(id);
+		//Recognize the spirit to delete
+		switch(id)
+		{
+			case 0:
+				Destroy(spiritsGroup.GetChild(0).transform.gameObject);
+				break;
+			case 1:
+				break;
+		}
+
+		
+
+		InvokeSpirit(id);
     }
 
-	public void UpdateCurrentSpirit(int id)
+
+	public void InvokeSpirit(int id)
 	{
 		//Put active the image that have the spiritImage
 		spiritsSlots[id].transform.GetChild(0).gameObject.SetActive(true);
@@ -62,20 +80,42 @@ public class CSpiritManager : MonoBehaviour
 		spiritsSlots[id].GetComponent<Image>().sprite = activeSpirit;
 		spiritsSlots[id].transform.localScale *= 1.4f;
 
-		
-
-		//Instantiate the spirit in player
-		
 		switch((ESpirit) id)
 		{
 			case ESpirit.ANCHIMALLEN:
-				spirits[id].gameObject.GetComponent<CAnchimallenController>().enabled = true;
+				cNPCManager.NPC[1] = (Instantiate(spiritsToInvoke[id], playerTransform.Find("AnchimallenPosition").transform.position, Quaternion.identity) as GameObject).transform;
+				cNPCManager.NPC[1].GetComponent<CAnchimallenController>().enabled = true;
+
+				cNPCManager.NPC[1].GetComponent<CAnchimallenController>().spiritUIImage = spiritsSlots[0].transform.GetChild(0).GetComponent<Image>();
+				cNPCManager.NPC[1].GetComponent<CAnchimallenController>().playerSpiritPosition = playerTransform.Find("AnchimallenPosition").transform;
+				cNPCManager.NPC[1].GetComponent<CAnchimallenController>().cPlayerController = playerTransform.gameObject.GetComponent<CPlayerController>();
+				
+				//spiritsGroup.GetChild(id).gameObject.GetComponent<CAnchimallenController>().enabled = true;
+
+				
 				break;
 			
 			case ESpirit.OTHER:
 				break;
 		}
+
+		currentSpirit = (ESpirit) id;
+		
 	}
 
 
+	public void TemporalyAnchimallenDissapear()
+	{
+		//Id in the npc manager gameobject of anchimallen
+		cNPCManager.NPC[1].gameObject.SetActive(false);
+	}
+
+	public void ActivateAnchimallen()
+	{
+		if(currentSpirit == ESpirit.ANCHIMALLEN)
+		{
+			cNPCManager.NPC[1].gameObject.SetActive(true);
+		}
+		
+	}
 }

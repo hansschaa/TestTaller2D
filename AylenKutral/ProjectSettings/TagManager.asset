@@ -17,6 +17,9 @@ TagManager:
   - Peak
   - MyPlayer
   - Enemy/Movil
+  - Hinge
+  - ActionObject
+  - Enemy/Rock
   layers:
   - Default
   - TransparentFX
