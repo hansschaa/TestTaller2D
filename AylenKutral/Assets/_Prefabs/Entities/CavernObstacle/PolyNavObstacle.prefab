@@ -86,6 +86,7 @@ MonoBehaviour:
   shapeType: 0
   extraOffset: 0
   invertPolygon: 0
+  _collider: {fileID: 0}
 --- !u!114 &114601030335004334
 MonoBehaviour:
   m_ObjectHideFlags: 1
