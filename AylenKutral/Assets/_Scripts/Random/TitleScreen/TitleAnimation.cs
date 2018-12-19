@@ -28,6 +28,7 @@ public class TitleAnimation : MonoBehaviour
 	Sequence _inSceneSequence;
 	Sequence _inPressForPlaySequence;
 	Sequence _inStartSequence;
+	private bool canPressStart;
 
 
 	[Header("Music Variables")]
@@ -51,6 +52,7 @@ public class TitleAnimation : MonoBehaviour
 	{
 		title = title.GetComponent<TextMeshProUGUI>();
 		_audioSource = this.GetComponent<AudioSource>();
+		canPressStart = false;
 	}
 
 
@@ -74,6 +76,7 @@ public class TitleAnimation : MonoBehaviour
 		_inSceneSequence.Append(a).AppendCallback(()=> 
 		{
             b = buttonForPlay.DOFade(1,1.5f).SetEase(Ease.OutQuad).SetLoops(-1, LoopType.Yoyo);
+			canPressStart = true;
         });
 		
 	}
@@ -81,7 +84,7 @@ public class TitleAnimation : MonoBehaviour
 
 	void Update()
 	{
-		if(this.player.GetButtonDown("Start") && GameStateManager.eGameState != EGameState.CUTSCENE)
+		if(this.player.GetButtonDown("Start") && GameStateManager.eGameState != EGameState.CUTSCENE && canPressStart)
 		{
 			GameStateManager.eGameState = EGameState.CUTSCENE;
 

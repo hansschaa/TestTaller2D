@@ -32,7 +32,7 @@ public class CPlayerController : MonoBehaviour
 
 	// Whether or not the player is grounded.
 	const float k_CeilingRadius = .5f; // Radius of the overlap circle to determine if the player can stand up
-	private Rigidbody2D m_Rigidbody2D;
+	public Rigidbody2D m_Rigidbody2D;
 	public bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
 	public RaycastHit2D raycasthit2d ;

@@ -1026,7 +1026,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!320 &78822859
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -4246,7 +4246,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 296005064}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1197.1, y: 29, z: -10}
+  m_LocalPosition: {x: -47.5, y: 4.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -6594,7 +6594,7 @@ GameObject:
   m_Layer: 10
   m_Name: SpawnRock
   m_TagString: Untagged
-  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -8264,8 +8264,7 @@ Prefab:
     - target: {fileID: 1827935090359438, guid: 728351d7a8b0b4a428796c09a6b2bf47, type: 2}
       propertyPath: m_Icon
       value: 
-      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000,
-        type: 0}
+      objectReference: {fileID: 0}
     - target: {fileID: 1827935090359438, guid: 728351d7a8b0b4a428796c09a6b2bf47, type: 2}
       propertyPath: m_Name
       value: TimelineTrigger
@@ -9837,8 +9836,7 @@ Prefab:
     - target: {fileID: 1827935090359438, guid: 728351d7a8b0b4a428796c09a6b2bf47, type: 2}
       propertyPath: m_Icon
       value: 
-      objectReference: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000,
-        type: 0}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 728351d7a8b0b4a428796c09a6b2bf47, type: 2}
   m_IsPrefabAsset: 0
@@ -15950,11 +15948,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4638904745880388, guid: 5f2640f0218d94d2ca2b326319253c01, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1197.1
+      value: -47.5
       objectReference: {fileID: 0}
     - target: {fileID: 4638904745880388, guid: 5f2640f0218d94d2ca2b326319253c01, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 23.3
+      value: -1.2
       objectReference: {fileID: 0}
     - target: {fileID: 4638904745880388, guid: 5f2640f0218d94d2ca2b326319253c01, type: 2}
       propertyPath: m_LocalPosition.z
@@ -26310,7 +26308,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1737133350}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1197.1, y: 23.3, z: -10}
+  m_LocalPosition: {x: -47.5, y: -1.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 679322729}
@@ -27743,7 +27741,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1864482359}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1197.1, y: 29, z: -10}
+  m_LocalPosition: {x: -47.5, y: 4.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1752420386}

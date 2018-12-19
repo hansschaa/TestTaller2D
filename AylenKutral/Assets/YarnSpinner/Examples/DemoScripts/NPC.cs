@@ -65,7 +65,8 @@ namespace Yarn.Unity.Example {
         }
 
         // Update is called once per frame
-        void Update () {
+        void Update () 
+        {
             if(player.GetButtonDown("Action") && isCollided)
             {
                 //base.StartDialogue(this.transform.position);

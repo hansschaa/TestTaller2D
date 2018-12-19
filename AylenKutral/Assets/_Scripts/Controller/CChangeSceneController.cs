@@ -8,6 +8,7 @@ public class CChangeSceneController : MonoBehaviour
 {
 	Sequence sequence;
 	public Image fade;
+	public int scene;
 
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
@@ -26,7 +27,7 @@ public class CChangeSceneController : MonoBehaviour
 	{
 		if(other.CompareTag("MyPlayer"))
 		{
-			sequence.Append(fade.DOFade(1,.5f)).Join(other.gameObject.transform.DOMoveX(other.gameObject.transform.position.x + 2,1).OnComplete( ()=> SceneManager.LoadScene(1)));
+			sequence.Append(fade.DOFade(1,.5f)).Join(other.gameObject.transform.DOMoveX(other.gameObject.transform.position.x + 2,1).OnComplete( ()=> SceneManager.LoadScene(scene)));
 		}
 	}
 

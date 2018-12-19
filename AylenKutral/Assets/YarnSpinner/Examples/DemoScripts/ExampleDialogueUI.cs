@@ -83,7 +83,7 @@ namespace Yarn.Unity.Example {
 
         /// How quickly to show the text, in seconds per character
         [Tooltip("How quickly to show the text, in seconds per character")]
-        public float textSpeed = 0f;
+        public float textSpeed = 0.001f;
 
         /// The buttons that let the user choose an option
         public List<Button> optionButtons;
@@ -91,6 +91,8 @@ namespace Yarn.Unity.Example {
         /// Make it possible to temporarily disable the controls when
         /// dialogue is active and to restore them when dialogue ends
         public RectTransform gameControlsContainer;
+
+        public GameObject player;
 
         void Awake ()
         {
@@ -123,7 +125,8 @@ namespace Yarn.Unity.Example {
 
             // Show the text
             lineText.gameObject.SetActive (true);
-
+            //lineText.text = line.text;
+             
             if (textSpeed > 0.0f) {
                 // Display the line one character at a time
                 var stringBuilder = new StringBuilder ();
@@ -212,7 +215,9 @@ namespace Yarn.Unity.Example {
         public override IEnumerator DialogueStarted ()
         {
             Debug.Log ("Dialogue starting!");
-           
+            player.GetComponent<CPlayerAnimation>().ChangeAnimation(EPlayerAnimationState.IDLE, "Idle");
+            player.GetComponent<CPlayerInput>().runSpeed = 1.5f;
+            player.GetComponent<CPlayerController>().m_Rigidbody2D.velocity = Vector2.zero;
             //ChangeTextBoxPosition();
 
             // Enable the dialogue controls.
